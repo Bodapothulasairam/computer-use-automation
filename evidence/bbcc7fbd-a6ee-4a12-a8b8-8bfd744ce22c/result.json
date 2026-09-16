@@ -1,0 +1,23 @@
+{
+  "status": "failure",
+  "runId": "bbcc7fbd-a6ee-4a12-a8b8-8bfd744ce22c",
+  "code": "PERMISSION_DENIED",
+  "step": "step-2",
+  "expected": "Member details",
+  "observed": {
+    "route": "/legacy/member",
+    "status": "permission",
+    "controls": [],
+    "fields": [],
+    "headings": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "heading",
+        "name": "Permission denied"
+      }
+    ],
+    "filled": []
+  },
+  "interventionId": "c03f5bdd-853e-4b52-b4ec-605f2c5d639e"
+}

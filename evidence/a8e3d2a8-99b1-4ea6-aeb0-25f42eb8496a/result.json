@@ -1,0 +1,42 @@
+{
+  "status": "failure",
+  "runId": "a8e3d2a8-99b1-4ea6-aeb0-25f42eb8496a",
+  "code": "CHECKPOINT_TIMEOUT",
+  "step": "discover-1",
+  "expected": "Goal verified on Balance summary",
+  "observed": {
+    "route": "/legacy/search",
+    "status": "ready",
+    "controls": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "button",
+        "name": "Search"
+      }
+    ],
+    "fields": [
+      {
+        "frame": "workspace",
+        "strategy": "table-label",
+        "name": "Member number"
+      }
+    ],
+    "headings": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "heading",
+        "name": "Member search"
+      }
+    ],
+    "filled": [
+      {
+        "frame": "workspace",
+        "strategy": "table-label",
+        "name": "Member number"
+      }
+    ]
+  },
+  "interventionId": "f6389602-3bf8-4b60-bcca-c91a8d71b059"
+}

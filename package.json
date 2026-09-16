@@ -1,0 +1,33 @@
+{
+  "name": "legacy-capability-runner",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "demo": "tsx src/cli.ts demo",
+    "discover": "tsx src/cli.ts discover",
+    "replay": "tsx src/cli.ts replay",
+    "app": "tsx src/cli.ts app",
+    "handoff": "tsx src/cli.ts handoff",
+    "test": "tsx --test --test-concurrency=1 test/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "verify": "npm run typecheck && npm test",
+    "schema": "tsx scripts/schema.ts",
+    "test:handoff": "tsx scripts/handoff-evidence.ts",
+    "audit": "tsx scripts/audit.ts"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "playwright": "^1.58.2",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "prettier": "3.9.7",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

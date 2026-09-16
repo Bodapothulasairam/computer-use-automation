@@ -1,0 +1,49 @@
+
+> legacy-capability-runner@1.0.0 verify
+> npm run typecheck && npm test
+
+
+> legacy-capability-runner@1.0.0 typecheck
+> tsc --noEmit
+
+
+> legacy-capability-runner@1.0.0 test
+> tsx --test --test-concurrency=1 test/*.test.ts
+
+✔ artifact rejects unknown versions, dangling inputs, extra data, duplicate ids (7.4737ms)
+✔ policy restricts scheme, origin, exact routes, query keys, target and irreversible action (8.227ms)
+✔ replay returns typed live outputs for a different parameter, without any model (684.6273ms)
+✔ not found is a business outcome, not a failure or escalation (602.3046ms)
+✔ application validation is a business outcome (491.1306ms)
+✔ invalid parameters fail before interacting with a browser (4.2752ms)
+✔ bounded recovery: notice (809.1198ms)
+✔ bounded recovery: transient (954.7732ms)
+✔ bounded recovery: slow (1691.3878ms)
+✔ hard failure has context and redacted snapshot: permission (650.7854ms)
+✔ hard failure has context and redacted snapshot: session (635.0007ms)
+✔ hard failure has context and redacted snapshot: app_error (617.4198ms)
+✔ hard failure has context and redacted snapshot: unknown_dialog (643.7774ms)
+✔ hard failure has context and redacted snapshot: ambiguous (688.4055ms)
+✔ forged checkpoint cannot declare success early (14.099ms)
+✔ missing final transition fails its checkpoint (1001.9892ms)
+✔ zero recovery allowance stops on the interstitial (558.0758ms)
+✔ live takeover keeps session identity, denies unowned actions, records manual action and resumes (1116.3938ms)
+✔ operator timeout fails closed (735.8427ms)
+✔ browser enforces ownership and blocks direct external network requests (431.2003ms)
+✔ discovery records only successful observed actions; fixture provenance is explicit (836.8394ms)
+✔ discovery does not trust a premature finish and does not emit an artifact (476.5061ms)
+✔ goal redacts declared input and common numeric/email data (0.3725ms)
+✔ all saved test evidence excludes synthetic PII and credential canaries (409.6111ms)
+✔ discovery resumes after manual UI actions and the resulting artifact replays (1702.9126ms)
+✔ discovery stops at its step budget (566.6326ms)
+✔ run deadline fails closed (429.4771ms)
+✔ output validation: wrong_member (700.7012ms)
+✔ output validation: bad_output (828.705ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19052.4076

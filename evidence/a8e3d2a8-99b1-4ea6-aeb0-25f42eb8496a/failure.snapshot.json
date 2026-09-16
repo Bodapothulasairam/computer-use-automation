@@ -1,0 +1,37 @@
+{
+  "format": "redacted-semantic-dom-v1",
+  "observation": {
+    "route": "/legacy/search",
+    "status": "ready",
+    "controls": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "button",
+        "name": "Search"
+      }
+    ],
+    "fields": [
+      {
+        "frame": "workspace",
+        "strategy": "table-label",
+        "name": "Member number"
+      }
+    ],
+    "headings": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "heading",
+        "name": "Member search"
+      }
+    ],
+    "filled": [
+      {
+        "frame": "workspace",
+        "strategy": "table-label",
+        "name": "Member number"
+      }
+    ]
+  }
+}

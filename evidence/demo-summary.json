@@ -1,0 +1,23 @@
+{
+  "discoveryRun": "a6214ecd-2499-4e9e-97ca-7eb14ebda721",
+  "replays": [
+    {
+      "runId": "ec9327a0-6a82-434c-9b8b-56903abd75c6",
+      "status": "success"
+    },
+    {
+      "runId": "67af5dcd-470e-4911-87ad-65cd518b1b2a",
+      "status": "business_outcome",
+      "code": "NOT_FOUND"
+    },
+    {
+      "runId": "7870f828-1dd8-4b8b-9f03-da0a6fdfcc07",
+      "status": "success"
+    },
+    {
+      "runId": "bbcc7fbd-a6ee-4a12-a8b8-8bfd744ce22c",
+      "status": "failure",
+      "code": "PERMISSION_DENIED"
+    }
+  ]
+}

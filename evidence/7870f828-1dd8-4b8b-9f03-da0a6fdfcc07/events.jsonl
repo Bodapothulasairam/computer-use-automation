@@ -1,0 +1,6 @@
+{"at":"2026-09-16T17:39:05.578Z","runId":"7870f828-1dd8-4b8b-9f03-da0a6fdfcc07","event":"start","mode":"replay"}
+{"at":"2026-09-16T17:39:05.824Z","runId":"7870f828-1dd8-4b8b-9f03-da0a6fdfcc07","event":"action","step":"step-1","actor":"automation","kind":"fill","target":{"frame":"workspace","strategy":"table-label","name":"Member number"},"parameter":"memberId","reason":"deterministic_replay"}
+{"at":"2026-09-16T17:39:05.866Z","runId":"7870f828-1dd8-4b8b-9f03-da0a6fdfcc07","event":"action","step":"step-2","actor":"automation","kind":"click","target":{"frame":"workspace","strategy":"role","role":"button","name":"Search"},"reason":"deterministic_replay"}
+{"at":"2026-09-16T17:39:05.966Z","runId":"7870f828-1dd8-4b8b-9f03-da0a6fdfcc07","event":"recovery","step":"step-2","condition":"notice","attempt":1,"action":"Continue"}
+{"at":"2026-09-16T17:39:06.041Z","runId":"7870f828-1dd8-4b8b-9f03-da0a6fdfcc07","event":"action","step":"step-3","actor":"automation","kind":"click","target":{"frame":"workspace","strategy":"role","role":"link","name":"Balance summary"},"reason":"deterministic_replay"}
+{"at":"2026-09-16T17:39:06.138Z","runId":"7870f828-1dd8-4b8b-9f03-da0a6fdfcc07","event":"finish","status":"success"}

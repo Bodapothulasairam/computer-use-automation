@@ -1,0 +1,5 @@
+{"at":"2026-09-16T17:39:06.209Z","runId":"bbcc7fbd-a6ee-4a12-a8b8-8bfd744ce22c","event":"start","mode":"replay"}
+{"at":"2026-09-16T17:39:06.474Z","runId":"bbcc7fbd-a6ee-4a12-a8b8-8bfd744ce22c","event":"action","step":"step-1","actor":"automation","kind":"fill","target":{"frame":"workspace","strategy":"table-label","name":"Member number"},"parameter":"memberId","reason":"deterministic_replay"}
+{"at":"2026-09-16T17:39:06.512Z","runId":"bbcc7fbd-a6ee-4a12-a8b8-8bfd744ce22c","event":"action","step":"step-2","actor":"automation","kind":"click","target":{"frame":"workspace","strategy":"role","role":"button","name":"Search"},"reason":"deterministic_replay"}
+{"at":"2026-09-16T17:39:06.615Z","runId":"bbcc7fbd-a6ee-4a12-a8b8-8bfd744ce22c","event":"intervention_queued","id":"c03f5bdd-853e-4b52-b4ec-605f2c5d639e","reason":"PERMISSION_DENIED","step":"step-2","sessionId":"bbcc7fbd-a6ee-4a12-a8b8-8bfd744ce22c","liveSessionAvailable":false}
+{"at":"2026-09-16T17:39:06.618Z","runId":"bbcc7fbd-a6ee-4a12-a8b8-8bfd744ce22c","event":"finish","status":"failure"}

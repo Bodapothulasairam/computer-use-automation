@@ -1,0 +1,25 @@
+{
+  "format": "redacted-semantic-dom-v1",
+  "observation": {
+    "route": "/legacy/member",
+    "status": "session_expired",
+    "controls": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "link",
+        "name": "Restore session"
+      }
+    ],
+    "fields": [],
+    "headings": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "heading",
+        "name": "Session expired"
+      }
+    ],
+    "filled": []
+  }
+}

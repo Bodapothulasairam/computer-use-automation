@@ -1,0 +1,4 @@
+{"at":"2026-09-16T17:39:05.069Z","runId":"67af5dcd-470e-4911-87ad-65cd518b1b2a","event":"start","mode":"replay"}
+{"at":"2026-09-16T17:39:05.365Z","runId":"67af5dcd-470e-4911-87ad-65cd518b1b2a","event":"action","step":"step-1","actor":"automation","kind":"fill","target":{"frame":"workspace","strategy":"table-label","name":"Member number"},"parameter":"memberId","reason":"deterministic_replay"}
+{"at":"2026-09-16T17:39:05.410Z","runId":"67af5dcd-470e-4911-87ad-65cd518b1b2a","event":"action","step":"step-2","actor":"automation","kind":"click","target":{"frame":"workspace","strategy":"role","role":"button","name":"Search"},"reason":"deterministic_replay"}
+{"at":"2026-09-16T17:39:05.501Z","runId":"67af5dcd-470e-4911-87ad-65cd518b1b2a","event":"finish","status":"business_outcome"}

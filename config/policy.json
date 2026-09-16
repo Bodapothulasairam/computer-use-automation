@@ -1,0 +1,16 @@
+{
+  "profile": "ledger-v1",
+  "allowedPaths": [
+    "/app",
+    "/legacy/search",
+    "/legacy/member",
+    "/legacy/summary",
+    "/legacy/recover"
+  ],
+  "allowedQueryKeys": ["member"],
+  "allowedActions": ["fill", "click"],
+  "maxSteps": 12,
+  "timeoutMs": 90000,
+  "stepTimeoutMs": 4000,
+  "recoveryAttempts": 2
+}

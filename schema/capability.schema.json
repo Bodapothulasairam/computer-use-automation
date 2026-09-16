@@ -1,0 +1,319 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]+$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "application": {
+      "type": "object",
+      "properties": {
+        "product": {
+          "type": "string",
+          "const": "legacy-ledger"
+        },
+        "version": {
+          "type": "string",
+          "const": "1"
+        },
+        "profile": {
+          "type": "string",
+          "const": "ledger-v1"
+        },
+        "entryPath": {
+          "type": "string",
+          "const": "/app"
+        }
+      },
+      "required": ["product", "version", "profile", "entryPath"],
+      "additionalProperties": false
+    },
+    "inputs": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "string"
+          },
+          "pattern": {
+            "type": "string"
+          },
+          "sensitive": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": ["type", "pattern", "sensitive", "description"],
+        "additionalProperties": false
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["number", "string"]
+          },
+          "sensitive": {
+            "type": "boolean"
+          },
+          "target": {
+            "type": "object",
+            "properties": {
+              "frame": {
+                "type": "string",
+                "const": "workspace"
+              },
+              "strategy": {
+                "type": "string",
+                "enum": ["role", "table-label"]
+              },
+              "role": {
+                "type": "string",
+                "enum": ["button", "link", "heading"]
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              }
+            },
+            "required": ["frame", "strategy", "name"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["type", "sensitive", "target"],
+        "additionalProperties": false
+      }
+    },
+    "steps": {
+      "minItems": 1,
+      "maxItems": 20,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "action": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "fill"
+                  },
+                  "target": {
+                    "type": "object",
+                    "properties": {
+                      "frame": {
+                        "type": "string",
+                        "const": "workspace"
+                      },
+                      "strategy": {
+                        "type": "string",
+                        "enum": ["role", "table-label"]
+                      },
+                      "role": {
+                        "type": "string",
+                        "enum": ["button", "link", "heading"]
+                      },
+                      "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80
+                      }
+                    },
+                    "required": ["frame", "strategy", "name"],
+                    "additionalProperties": false
+                  },
+                  "parameter": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z]\\w*$"
+                  }
+                },
+                "required": ["kind", "target", "parameter"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "click"
+                  },
+                  "target": {
+                    "type": "object",
+                    "properties": {
+                      "frame": {
+                        "type": "string",
+                        "const": "workspace"
+                      },
+                      "strategy": {
+                        "type": "string",
+                        "enum": ["role", "table-label"]
+                      },
+                      "role": {
+                        "type": "string",
+                        "enum": ["button", "link", "heading"]
+                      },
+                      "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80
+                      }
+                    },
+                    "required": ["frame", "strategy", "name"],
+                    "additionalProperties": false
+                  }
+                },
+                "required": ["kind", "target"],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "expect": {
+            "type": "object",
+            "properties": {
+              "target": {
+                "type": "object",
+                "properties": {
+                  "frame": {
+                    "type": "string",
+                    "const": "workspace"
+                  },
+                  "strategy": {
+                    "type": "string",
+                    "enum": ["role", "table-label"]
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["button", "link", "heading"]
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80
+                  }
+                },
+                "required": ["frame", "strategy", "name"],
+                "additionalProperties": false
+              },
+              "condition": {
+                "type": "string",
+                "const": "visible"
+              }
+            },
+            "required": ["target", "condition"],
+            "additionalProperties": false
+          },
+          "rationale": {
+            "type": "string",
+            "maxLength": 160
+          }
+        },
+        "required": ["id", "action", "expect", "rationale"],
+        "additionalProperties": false
+      }
+    },
+    "success": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "object",
+          "properties": {
+            "frame": {
+              "type": "string",
+              "const": "workspace"
+            },
+            "strategy": {
+              "type": "string",
+              "enum": ["role", "table-label"]
+            },
+            "role": {
+              "type": "string",
+              "enum": ["button", "link", "heading"]
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            }
+          },
+          "required": ["frame", "strategy", "name"],
+          "additionalProperties": false
+        },
+        "condition": {
+          "type": "string",
+          "const": "visible"
+        }
+      },
+      "required": ["target", "condition"],
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["live-llm", "test-fixture"]
+        },
+        "model": {
+          "type": "string"
+        },
+        "runId": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+        }
+      },
+      "required": ["kind", "model", "runId", "createdAt"],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "version",
+    "description",
+    "application",
+    "inputs",
+    "outputs",
+    "steps",
+    "success",
+    "provenance"
+  ],
+  "additionalProperties": false
+}
