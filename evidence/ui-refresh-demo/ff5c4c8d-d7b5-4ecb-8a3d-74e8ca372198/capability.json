@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "1.0",
+  "id": "member-savings-balance",
+  "version": "1.0.0",
+  "description": "Look up a member and read the savings balance from the reviewed summary screen.",
+  "application": {
+    "product": "legacy-ledger",
+    "version": "1",
+    "profile": "ledger-v1",
+    "entryPath": "/app"
+  },
+  "inputs": {
+    "memberId": {
+      "type": "string",
+      "pattern": "^[0-9]{5}$",
+      "sensitive": true,
+      "description": "Five digit synthetic member number supplied at invocation"
+    }
+  },
+  "outputs": {
+    "savingsBalance": {
+      "type": "number",
+      "sensitive": true,
+      "target": {
+        "frame": "workspace",
+        "strategy": "table-label",
+        "name": "Savings balance"
+      }
+    },
+    "currency": {
+      "type": "string",
+      "sensitive": false,
+      "target": {
+        "frame": "workspace",
+        "strategy": "table-label",
+        "name": "Currency"
+      }
+    }
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "action": {
+        "kind": "fill",
+        "target": {
+          "frame": "workspace",
+          "strategy": "table-label",
+          "name": "Member number"
+        },
+        "parameter": "memberId"
+      },
+      "expect": {
+        "target": {
+          "frame": "workspace",
+          "strategy": "role",
+          "role": "heading",
+          "name": "Member search"
+        },
+        "condition": "visible"
+      },
+      "rationale": "enter_input"
+    },
+    {
+      "id": "step-2",
+      "action": {
+        "kind": "click",
+        "target": {
+          "frame": "workspace",
+          "strategy": "role",
+          "role": "button",
+          "name": "Search"
+        }
+      },
+      "expect": {
+        "target": {
+          "frame": "workspace",
+          "strategy": "role",
+          "role": "heading",
+          "name": "Member details"
+        },
+        "condition": "visible"
+      },
+      "rationale": "enter_input"
+    },
+    {
+      "id": "step-3",
+      "action": {
+        "kind": "click",
+        "target": {
+          "frame": "workspace",
+          "strategy": "role",
+          "role": "link",
+          "name": "Balance summary"
+        }
+      },
+      "expect": {
+        "target": {
+          "frame": "workspace",
+          "strategy": "role",
+          "role": "heading",
+          "name": "Balance summary"
+        },
+        "condition": "visible"
+      },
+      "rationale": "read_summary"
+    }
+  ],
+  "success": {
+    "target": {
+      "frame": "workspace",
+      "strategy": "role",
+      "role": "heading",
+      "name": "Balance summary"
+    },
+    "condition": "visible"
+  },
+  "provenance": {
+    "kind": "live-llm",
+    "model": "gpt-4.1-mini",
+    "runId": "ff5c4c8d-d7b5-4ecb-8a3d-74e8ca372198",
+    "createdAt": "2026-09-16T18:58:28.019Z"
+  }
+}

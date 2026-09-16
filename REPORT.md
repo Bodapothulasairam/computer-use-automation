@@ -2,7 +2,7 @@
 
 ## Architecture
 
-The implemented vertical slice reads a synthetic member's savings balance: member search, detail screen, then balance summary. A local HTTP app deliberately uses a named iframe and table-labelled inputs without test IDs. This exercises a legacy-web seam while staying reproducible and using no real banking data or external application API.
+The implemented vertical slice reads a synthetic member's savings balance: member search, detail screen, then balance summary. A local HTTP app deliberately uses a named iframe and table-labelled inputs without test IDs. This exercises a legacy-web seam while staying reproducible and using no real banking data or external application API. Responsive styling modernizes the visual interface while preserving iframe and table relationships for existing artifacts.
 
 A single Node.js/TypeScript process owns the run, policy, browser context, evidence sink and optional operator server. Discovery calls the OpenAI Responses API with a redacted observation and a constrained action schema. The model chooses the next action; the surface adapter performs it against Chromium. The successful run compiles to a capability. Replay loads that capability and executes it without constructing a model client. This keeps orchestration understandable and avoids queues or services before they are needed.
 
@@ -45,7 +45,7 @@ For reuse, keep a vendor/version capability separate from a tenant binding: orig
 
 ## Escalation & handoff
 
-Ownership is explicit: automation, paused, human, then automation or closed. A blocked run writes an intervention with reason, step, session ID and redacted state. With operator mode enabled, it keeps that same browser context alive and exposes a loopback console protected by an ephemeral bearer token. Claim transfers ownership. Console actions use the same surface and policy, so they actually drive the paused session. Resume returns control and replay verifies the checkpoint rather than blindly repeating the previous action. Manual actions and ownership changes are audited.
+Ownership is explicit: automation, paused, human, then automation or closed. A blocked run writes an intervention with reason, step, session ID and redacted state. With operator mode enabled, it keeps that same browser context alive and exposes a loopback console protected by an ephemeral bearer token. Claim transfers ownership. Console actions use the same surface and policy, so they actually drive the paused session. Recovery and resume controls are disabled until their prerequisites are met. The server requires a successful manual action and verifies the paused checkpoint before allowing resume; the replay engine verifies it again before continuing. Manual actions and ownership changes are audited.
 
 The server serializes mutating requests and rejects unauthorized, unclaimed, duplicate or concurrent operations. Tokens stay out of evidence. Abandonment times out closed. Discovery can resume too: approved manual flow actions are recorded with observed checkpoints; known recovery actions stay in recovery policy. Without a connected operator, a durable intervention remains, but the browser is closed and that session cannot be resumed.
 

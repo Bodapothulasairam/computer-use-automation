@@ -193,6 +193,12 @@ test("live takeover keeps session identity, denies unowned actions, records manu
           assert.equal((await api("/action", { action: restore })).status, 409);
           assert.equal((await api("/claim", {})).status, 200);
           assert.equal((await api("/claim", {})).status, 409);
+          const premature = await api("/resume", {});
+          assert.equal(premature.status, 409);
+          assert.equal(
+            ((await premature.json()) as any).code,
+            "RECOVERY_NOT_VERIFIED",
+          );
           assert.equal(
             (
               await api("/action", {

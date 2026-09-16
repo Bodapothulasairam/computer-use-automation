@@ -24,15 +24,15 @@ Replay logs contain no model decisions or model calls. Assertions in the browser
 ## Same-session operator takeover
 
 - [Handoff summary](handoff-summary.json).
-- [Handoff events](b6a39e3e-9652-4c16-a7c9-b58f0ce1ab58/events.jsonl).
-- [Handoff result](b6a39e3e-9652-4c16-a7c9-b58f0ce1ab58/result.json).
+- [Handoff events](87c4add4-77a8-4dc2-9e65-06b00c046a31/events.jsonl).
+- [Handoff result](87c4add4-77a8-4dc2-9e65-06b00c046a31/result.json).
 - [Operator console screenshot](operator-console.png).
 
 The automated operator opened the real console, claimed control, clicked Restore session, verified the unchanged session ID, and resumed automation. Replay then completed. This demonstrates the real mechanism with an **automated human stand-in**, not claimed human participation. No secret token or private field value appears in the screenshot.
 
 ## Verification
 
-[verification.txt](verification.txt) records the final type check and complete passing unit/integration suite. The suite uses real Chromium for application interactions. Its scripted discovery provider is labelled test-fixture and is separate from the genuine discovery above.
+[verification.txt](verification.txt) records the original submission checks. [ui-update-verification.json](ui-update-verification.json) records the subsequent 34-test UI, timing, and handoff validation. The suite uses real Chromium for application interactions. Its scripted discovery provider is labelled test-fixture and is separate from the genuine discovery above.
 
 Run these to reproduce:
 
@@ -48,3 +48,9 @@ The live demo needs an OpenAI key. All other commands work without live services
 ## Deliberately retained failed discovery
 
 The [earlier discovery](a8e3d2a8-99b1-4ea6-aeb0-25f42eb8496a/events.jsonl) predicted navigation immediately after filling a field. Its checkpoint failed closed and no capability was emitted. The final implementation derives a fill checkpoint from the current observed heading, because filling does not submit. This failed run is retained as transparent debugging evidence; it is not the successful example.
+
+## Guided interface and paced demo update
+
+The [new genuine discovery and replay evidence](ui-refresh-demo/demo-summary.json) was produced by the visible demo with a two-second action delay and five-second final hold. The original capability also continues to pass deterministic replay tests.
+
+Operator screenshots: [before claim](operator-before-claim.png), [control claimed](operator-console.png), [recovery verified](operator-ready.png), [mobile](operator-mobile.png). Disabled controls and a server-side resume gate enforce the sequence.

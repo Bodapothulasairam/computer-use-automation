@@ -14,12 +14,14 @@ import { Evidence } from "./evidence.js";
 import { BrowserSurface } from "./surface.js";
 import { Handoff, type HandoffOptions } from "./handoff.js";
 import { safeGoal, type Discoverer } from "./model.js";
+import type { Presentation } from "./presentation.js";
 export type Options = {
   origin: string;
   parameters: Record<string, string>;
   evidenceDir?: string;
   scenario?: string;
   headless?: boolean;
+  presentation?: Presentation;
   operator?: HandoffOptions;
   policy?: PolicyConfig;
   entryPath?: string;
@@ -56,7 +58,11 @@ class Runtime {
       this.options.policy ?? (await readPolicy()),
     );
     this.deadline = Date.now() + this.policy.config.timeoutMs;
-    this.surface = new BrowserSurface(this.policy, this.evidence);
+    this.surface = new BrowserSurface(
+      this.policy,
+      this.evidence,
+      this.options.presentation,
+    );
   }
   budget() {
     if (Date.now() > this.deadline) throw new Fault("RUN_TIMEOUT");
@@ -134,6 +140,7 @@ class Runtime {
   async handoff(
     error: unknown,
     onAction?: (action: Action, observation: Observation) => Promise<void>,
+    expected?: Checkpoint,
   ): Promise<boolean> {
     if (error instanceof Business) return false;
     if (this.options.operator) {
@@ -142,7 +149,7 @@ class Runtime {
         this.evidence,
         this.options.operator,
         onAction,
-      ).request(code(error), this.step, this.observed);
+      ).request(code(error), this.step, this.observed, expected);
       if (resumed) {
         this.deadline = Date.now() + this.policy.config.timeoutMs;
         return true;
@@ -158,6 +165,11 @@ class Runtime {
         code: error.code,
         step: this.step,
       };
+      await this.surface?.presentStatus(
+        error.code === "NOT_FOUND"
+          ? "Member not found - Lookup finished"
+          : "Validation error - Lookup stopped",
+      );
       await this.evidence.result(result);
       return result;
     }
@@ -181,6 +193,9 @@ class Runtime {
       observed: this.observed,
       interventionId: id,
     };
+    await this.surface?.presentStatus(
+      "Run stopped - " + code(error).replaceAll("_", " ").toLowerCase(),
+    );
     await this.evidence.result(result);
     return result;
   }
@@ -200,6 +215,7 @@ class Runtime {
       runId: this.evidence.runId,
       outputs,
     };
+    await this.surface.presentStatus("Lookup complete - Balance verified");
     await this.evidence.result(result);
     return result;
   }
@@ -242,7 +258,7 @@ export async function replay(
         await r.surface.perform(step.action, options.parameters, "automation");
         await r.settle(step.expect);
       } catch (error) {
-        if (!(await r.handoff(error))) throw error;
+        if (!(await r.handoff(error, undefined, step.expect))) throw error;
         // Never repeat a possibly completed write after manual recovery.
         await r.settle(step.expect);
       }

@@ -4,6 +4,7 @@ import { startDemo } from "./demo-app.js";
 import { discover, replay } from "./engine.js";
 import { loadModelConfig, OpenAIModel } from "./model.js";
 import { fixture } from "./fixture.js";
+import { presentationOptions } from "./presentation.js";
 const { values, positionals } = parseArgs({
   allowPositionals: true,
   options: {
@@ -15,6 +16,8 @@ const { values, positionals } = parseArgs({
     scenario: { type: "string", default: "normal" },
     operator: { type: "boolean", default: false },
     headed: { type: "boolean", default: false },
+    "action-delay-ms": { type: "string" },
+    "final-hold-ms": { type: "string" },
     port: { type: "string", default: "4173" },
   },
 });
@@ -29,6 +32,11 @@ try {
       process.once("SIGTERM", resolve);
     });
   } else {
+    const presentation = presentationOptions(
+      values.headed!,
+      values["action-delay-ms"],
+      values["final-hold-ms"],
+    );
     if (!values.target) app = await startDemo();
     const target = values.target
       ? new URL(values.target)
@@ -40,9 +48,11 @@ try {
       evidenceDir: values.out,
       scenario: command === "handoff" ? "session" : values.scenario,
       headless: !values.headed,
+      presentation,
       operator: values.operator || command === "handoff" ? {} : undefined,
     };
     if (command === "discover" || command === "demo") {
+      console.log("Discovering the workflow in the live application...");
       const config = await loadModelConfig();
       const d = await discover(
         values.goal ??
@@ -66,6 +76,11 @@ try {
             ["12345", "notice"],
             ["12345", "permission"],
           ] as const) {
+            console.log(
+              "Replay scenario: " +
+                scenario +
+                (member === "00000" ? " (member not found)" : ""),
+            );
             const result = await replay(d.artifact, {
               ...options,
               parameters: { memberId: member },

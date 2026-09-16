@@ -1,6 +1,7 @@
 import http from "node:http";
 import { createHash } from "node:crypto";
 import type { AddressInfo } from "node:net";
+import { workspacePage as page, appShell } from "./ui.js";
 
 const esc = (s: string) =>
   s.replace(
@@ -10,10 +11,6 @@ const esc = (s: string) =>
         c
       ]!,
   );
-const css = `body{font:16px system-ui;background:#f4f6f8;color:#14283d;margin:0;padding:28px}h1{font-size:24px}h2{font-size:21px}table{border-collapse:collapse;background:white;width:100%;max-width:680px}td{padding:14px;border-bottom:1px solid #dce3ea}button,a.action{background:#125c6e;color:white;border:0;border-radius:5px;padding:11px 20px;cursor:pointer;display:inline-block;text-decoration:none}input{padding:10px;font:inherit;border:1px solid #8293a2}a{color:#125c6e}aside{background:#e1e9ee;padding:12px}iframe{width:100%;height:620px;border:1px solid #c4d1db;background:white}button:disabled{background:#8999a4;cursor:not-allowed;opacity:.7}small{color:#50677b}.badge{font-size:12px;letter-spacing:2px;color:#42727d}`;
-const page = (body: string) =>
-  `<!doctype html><html><head><meta charset="utf-8"><title>Legacy Ledger | Synthetic banking sandbox</title><style>${css}</style></head><body>${body}</body></html>`;
-// Authorize this fixed script without allowing arbitrary inline scripts.
 const memberSearchScript = `(() => {
   const form = document.querySelector('form');
   const input = form.elements.namedItem('member');
@@ -22,24 +19,73 @@ const memberSearchScript = `(() => {
   input.addEventListener('input', update);
   input.addEventListener('change', update);
   window.addEventListener('pageshow', update);
-  form.addEventListener('submit', event => {
-    update();
-    if (button.disabled) event.preventDefault();
-  });
+  form.addEventListener('submit', event => { update(); if (button.disabled) event.preventDefault(); });
   update();
 })();`;
 const searchScriptHash = createHash("sha256")
   .update(memberSearchScript)
   .digest("base64");
-const alerts: Record<string, string> = {
-  validation: "Validation error",
-  permission: "Permission denied",
-  session: "Session expired",
-  app_error: "Application error",
-  unknown_dialog: "Unexpected confirmation",
-  transient: "Temporarily unavailable",
-  notice: "Service notice",
+const alerts: Record<string, { title: string; message: string }> = {
+  validation: {
+    title: "Validation error",
+    message:
+      "We could not validate this lookup. Check the member number and try again.",
+  },
+  permission: {
+    title: "Permission denied",
+    message:
+      "This session does not have permission to view member records. Contact an authorized operator.",
+  },
+  session: {
+    title: "Session expired",
+    message:
+      "Your session has expired. An operator can restore access to continue this lookup.",
+  },
+  app_error: {
+    title: "Application error",
+    message:
+      "The member service is unavailable. This lookup has stopped so an operator can review it.",
+  },
+  unknown_dialog: {
+    title: "Unexpected confirmation",
+    message:
+      "This lookup requires an operator to review a confirmation before continuing.",
+  },
+  transient: {
+    title: "Temporarily unavailable",
+    message:
+      "The member service is taking longer than expected. Retry to continue your lookup.",
+  },
+  notice: {
+    title: "Service notice",
+    message:
+      "Member services are available. Acknowledge this notice to continue your lookup.",
+  },
 };
+const info = (title: string, body: string) =>
+  '<aside class="info-panel"><h3>' + title + "</h3>" + body + "</aside>";
+const grid = (body: string, aside: string) =>
+  '<div class="content-grid"><section class="main-panel">' +
+  body +
+  "</section>" +
+  aside +
+  "</div>";
+const errorPage = (title: string, message: string, action = "", stage = 1) =>
+  page(
+    grid(
+      '<div class="notice-icon" aria-hidden="true">!</div><div class="eyebrow">Lookup needs attention</div><h2>' +
+        title +
+        "</h2><p>" +
+        message +
+        "</p>" +
+        action,
+      info(
+        "Your place is saved",
+        "<p>The current member lookup stays in this session while the issue is reviewed.</p><p>Only available actions are shown.</p>",
+      ),
+    ),
+    stage,
+  );
 export async function startDemo(port = 0) {
   const server = http.createServer((req, res) => {
     const url = new URL(req.url!, "http://localhost");
@@ -53,24 +99,31 @@ export async function startDemo(port = 0) {
     res.setHeader("Cache-Control", "no-store");
     res.setHeader(
       "Content-Security-Policy",
-      `default-src 'self'; style-src 'unsafe-inline'; script-src ${path === "/legacy/search" ? "'sha256-" + searchScriptHash + "'" : "'none'"}; frame-ancestors 'self'; form-action 'self'`,
+      "default-src 'self'; style-src 'unsafe-inline'; script-src " +
+        (path === "/legacy/search"
+          ? "'sha256-" + searchScriptHash + "'"
+          : "'none'") +
+        "; frame-ancestors 'self'; form-action 'self'",
     );
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     if (path === "/app") {
-      res.end(
-        page(
-          '<div class="badge">DEMONSTRATION / SYNTHETIC DATA ONLY</div><h1>Legacy Ledger</h1><p>Member servicing workstation · Vendor release 1</p><iframe name="workspace" title="Member workspace" src="/legacy/search"></iframe>',
-        ),
-      );
+      res.end(appShell());
       return;
     }
     if (path === "/legacy/search") {
       res.end(
         page(
-          '<h2>Member search</h2><p>Locate a member to view their savings summary.</p><form method="get" action="/legacy/member"><table><tr><td>Member number</td><td><input name="member" type="text" autocomplete="off" aria-label="Member number" aria-describedby="member-hint" placeholder="5 digits (e.g. 12345)" inputmode="numeric" pattern="[0-9]{5}" minlength="5" maxlength="5" required></td></tr></table><p id="member-hint"><small>Enter exactly 5 digits.</small></p><p><button type="submit" disabled>Search</button></p></form><small>Sandbox members: 12345 and 67890.</small>' +
+          grid(
+            '<div class="eyebrow">01 / Find a member</div><h2>Member search</h2><p>Enter a member number to get started.</p><form method="get" action="/legacy/member"><table class="form-table"><tr><td>Member number</td><td><input name="member" type="text" autocomplete="off" aria-label="Member number" aria-describedby="member-hint" placeholder="5 digits (e.g. 12345)" inputmode="numeric" pattern="[0-9]{5}" minlength="5" maxlength="5" required></td></tr></table><p class="hint" id="member-hint"><small>Enter exactly 5 digits to enable Search.</small></p><button type="submit" disabled>Search</button></form>',
+            info(
+              "Try a sample member",
+              "<p>Use <strong>12345</strong> or <strong>67890</strong> to explore a complete lookup.</p><p>All member records in this workspace are synthetic.</p>",
+            ),
+          ) +
             "<script>" +
             memberSearchScript +
             "</script>",
+          0,
         ),
       );
       return;
@@ -94,18 +147,23 @@ export async function startDemo(port = 0) {
           "Set-Cookie",
           "recovered=1; Path=/; SameSite=Strict; HttpOnly",
         );
-        setTimeout(() => {
-          res.end(
-            page(
-              '<h2>Loading</h2><a href="/legacy/member?member=' +
-                esc(member) +
-                '">Retry</a>',
+        setTimeout(
+          () =>
+            res.end(
+              errorPage(
+                "Loading",
+                "We are retrieving this member's details.",
+                '<div class="actions"><a class="action" href="/legacy/member?member=' +
+                  esc(member) +
+                  '">Retry</a></div>',
+              ),
             ),
-          );
-        }, 700);
+          700,
+        );
         return;
       }
-      if (alerts[scenario] && !recovered) {
+      const alert = alerts[scenario];
+      if (alert && !recovered) {
         const label =
           scenario === "notice"
             ? "Continue"
@@ -118,67 +176,83 @@ export async function startDemo(port = 0) {
           "session",
           "unknown_dialog",
         ].includes(scenario)
-          ? '<p><a class="action" href="/legacy/recover?member=' +
+          ? '<div class="actions"><a class="action" href="/legacy/recover?member=' +
             esc(member) +
             '">' +
             label +
-            "</a></p>"
+            "</a></div>"
           : "";
-        res.end(
-          page(
-            "<h2>" +
-              alerts[scenario] +
-              "</h2><aside>Automation must handle this condition explicitly.</aside>" +
-              recovery,
-          ),
-        );
+        res.end(errorPage(alert.title, alert.message, recovery));
         return;
       }
       if (!/^\d{5}$/.test(member)) {
-        res.end(page("<h2>Validation error</h2>"));
-        return;
-      }
-      if (!["12345", "67890"].includes(member)) {
-        res.end(page("<h2>Member not found</h2>"));
-        return;
-      }
-      if (path === "/legacy/member") {
-        const duplicate =
-          scenario === "ambiguous"
-            ? '<a href="/legacy/summary?member=' +
-              esc(member) +
-              '">Balance summary</a>'
-            : "";
         res.end(
-          page(
-            "<h2>Member details</h2><table><tr><td>Member number</td><td>" +
-              esc(member) +
-              '</td></tr><tr><td>Name</td><td>Demo Member</td></tr></table><p><a class="action" href="/legacy/summary?member=' +
-              esc(member) +
-              '">Balance summary</a></p>' +
-              duplicate +
-              "<p><button>Transfer funds</button></p>",
+          errorPage(
+            "Validation error",
+            "Enter a member number containing exactly five digits.",
           ),
         );
         return;
       }
+      if (!["12345", "67890"].includes(member)) {
+        res.end(
+          errorPage(
+            "Member not found",
+            "No member matched this number. Check the number before starting a new lookup.",
+          ),
+        );
+        return;
+      }
+      if (path === "/legacy/member") {
+        const link =
+          '<a class="action" href="/legacy/summary?member=' +
+          esc(member) +
+          '">Balance summary</a>';
+        res.end(
+          page(
+            grid(
+              '<div class="eyebrow">02 / Review the record</div><h2>Member details</h2><p>Confirm the member record before viewing their balance.</p><table><tr><td>Member number</td><td>' +
+                esc(member) +
+                '</td></tr><tr><td>Name</td><td>Demo Member</td></tr><tr><td>Account type</td><td>Savings</td></tr></table><div class="actions">' +
+                link +
+                (scenario === "ambiguous" ? link : "") +
+                "</div>",
+              info(
+                "Read-only servicing",
+                '<p>This workspace provides account information without changing member records.</p><button class="secondary" disabled>Transfer funds</button><p><small>Transactions are unavailable in this demo.</small></p>',
+              ),
+            ),
+            1,
+          ),
+        );
+        return;
+      }
+      const balance =
+        scenario === "bad_output"
+          ? "unavailable"
+          : member === "12345"
+            ? "1250.75"
+            : "9820.50";
       res.end(
         page(
-          "<h2>Balance summary</h2><table><tr><td>Member number</td><td>" +
-            esc(scenario === "wrong_member" ? "99999" : member) +
-            "</td></tr><tr><td>Savings balance</td><td>" +
-            (scenario === "bad_output"
-              ? "unavailable"
-              : member === "12345"
-                ? "1250.75"
-                : "9820.50") +
-            "</td></tr><tr><td>Currency</td><td>USD</td></tr></table><p>Read-only summary complete.</p>",
+          grid(
+            '<div class="eyebrow">03 / Account overview</div><h2>Balance summary</h2><p>The requested savings-account information is ready.</p><table class="account-table"><tr><td>Member number</td><td>' +
+              esc(scenario === "wrong_member" ? "99999" : member) +
+              '</td></tr><tr class="balance-row"><td>Savings balance</td><td>' +
+              balance +
+              '</td></tr><tr><td>Currency</td><td>USD</td></tr></table><div class="notice success"><p>Lookup complete. No account changes were made.</p></div>',
+            info(
+              "Verified account context",
+              "<p>This balance belongs to the member selected in the current lookup.</p><p>Demo data is shown for evaluation purposes.</p>",
+            ),
+          ),
+          2,
         ),
       );
       return;
     }
     res.statusCode = 404;
-    res.end(page("<h2>Application error</h2>"));
+    res.end(errorPage("Application error", "This page is unavailable."));
   });
   await new Promise<void>((resolve) =>
     server.listen(port, "127.0.0.1", resolve),

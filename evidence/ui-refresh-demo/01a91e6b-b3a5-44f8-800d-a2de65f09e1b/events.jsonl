@@ -1,0 +1,5 @@
+{"at":"2026-09-16T18:59:10.563Z","runId":"01a91e6b-b3a5-44f8-800d-a2de65f09e1b","event":"start","mode":"replay"}
+{"at":"2026-09-16T18:59:11.045Z","runId":"01a91e6b-b3a5-44f8-800d-a2de65f09e1b","event":"action","step":"step-1","actor":"automation","kind":"fill","target":{"frame":"workspace","strategy":"table-label","name":"Member number"},"parameter":"memberId","reason":"deterministic_replay"}
+{"at":"2026-09-16T18:59:13.166Z","runId":"01a91e6b-b3a5-44f8-800d-a2de65f09e1b","event":"action","step":"step-2","actor":"automation","kind":"click","target":{"frame":"workspace","strategy":"role","role":"button","name":"Search"},"reason":"deterministic_replay"}
+{"at":"2026-09-16T18:59:15.316Z","runId":"01a91e6b-b3a5-44f8-800d-a2de65f09e1b","event":"intervention_queued","capabilityId":"member-savings-balance","id":"c6e497f4-5fe1-4313-aded-96320b6b379a","reason":"PERMISSION_DENIED","step":"step-2","sessionId":"01a91e6b-b3a5-44f8-800d-a2de65f09e1b","liveSessionAvailable":false}
+{"at":"2026-09-16T18:59:15.327Z","runId":"01a91e6b-b3a5-44f8-800d-a2de65f09e1b","event":"finish","status":"failure"}

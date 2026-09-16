@@ -1,10 +1,11 @@
 import http from "node:http";
 import type { AddressInfo } from "node:net";
 import { randomBytes, randomUUID } from "node:crypto";
-import { Action, type Observation } from "./schema.js";
+import { Action, type Observation, type Checkpoint } from "./schema.js";
 import type { BrowserSurface } from "./surface.js";
 import type { Evidence } from "./evidence.js";
 import { Fault } from "./policy.js";
+import { operatorHtml } from "./operator-ui.js";
 export type Intervention = {
   capabilityId: string;
   id: string;
@@ -19,14 +20,6 @@ export type HandoffOptions = {
   timeoutMs?: number;
   onRequest?: (i: Intervention) => Promise<void> | void;
 };
-const html = `<!doctype html><html><head><meta charset="utf-8"><title>Operator handoff</title><style>body{font:16px system-ui;max-width:800px;margin:40px auto;color:#153349;background:#edf2f5}button{padding:12px;margin:6px;border:0;background:#185a70;color:white;border-radius:5px}pre{white-space:pre-wrap;background:white;padding:20px}input{padding:10px}</style></head><body><h1>Live session intervention</h1><p>Claim control, act on the current session, then resume automation. Input values are never recorded.</p><button id="claim">Claim control</button><button id="resume">Resume automation</button><button id="abort">Abort run</button><pre id="state"></pre><div id="controls"></div><p id="error" role="alert"></p><script>
-const token=location.hash.slice(1);history.replaceState(null,'',location.pathname);
-const api=async(path,data)=>{const r=await fetch(path,{method:data?'POST':'GET',headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json'},body:data?JSON.stringify(data):undefined});const v=await r.json();if(!r.ok)throw Error(v.code);return v;};
-async function refresh(){try{const s=await api('/state');document.getElementById('state').textContent=JSON.stringify(s,null,2);const c=document.getElementById('controls');c.replaceChildren();if(s.owner==='human'){for(const t of s.observation?.controls||[]){const b=document.createElement('button');b.textContent=t.name;b.onclick=()=>act({kind:'click',target:t});c.append(b);}for(const t of (s.observation?.fields||[]).filter(t=>t.name==='Member number')){const i=document.createElement('input');i.placeholder='Member number';i.setAttribute('aria-label','Member number');const b=document.createElement('button');b.textContent='Fill member number';b.onclick=()=>act({kind:'fill',target:t,parameter:'memberId'},{memberId:i.value});c.append(i,b);}}}catch(e){document.getElementById('error').textContent=e.message;}}
-async function act(action,parameters={}){try{await api('/action',{action,parameters});await refresh();}catch(e){document.getElementById('error').textContent=e.message;}}
-for(const p of ['claim','resume','abort'])document.getElementById(p).onclick=async()=>{try{await api('/'+p,{});if(p==='claim')await refresh();else document.getElementById('state').textContent='Control returned. You may close this window.';}catch(e){document.getElementById('error').textContent=e.message;}};
-refresh();
-</script></body></html>`;
 export class Handoff {
   constructor(
     readonly surface: BrowserSurface,
@@ -41,6 +34,7 @@ export class Handoff {
     reason: string,
     step: string,
     observation: Observation | null,
+    expected?: Checkpoint,
   ): Promise<boolean> {
     const id = randomUUID(),
       token = randomBytes(32).toString("hex");
@@ -56,6 +50,7 @@ export class Handoff {
     });
     let finish!: (ok: boolean) => void;
     const completed = new Promise<boolean>((resolve) => (finish = resolve));
+    let manualActions = 0;
     let busy = false,
       settled = false;
     const complete = (ok: boolean) => {
@@ -63,6 +58,32 @@ export class Handoff {
       settled = true;
       this.surface.owner = "paused";
       finish(ok);
+    };
+    const inspect = async () => {
+      const current = await this.surface.observe().catch(() => null);
+      const verified =
+        !!current &&
+        current.status === "ready" &&
+        manualActions > 0 &&
+        (!expected || (await this.surface.check(expected).catch(() => false)));
+      const allowedControls = (current?.controls ?? []).filter((target) => {
+        try {
+          this.surface.policy.action({ kind: "click", target }, "human");
+          return (
+            target.name !== "Search" ||
+            current!.filled.some((t) => t.name === "Member number")
+          );
+        } catch {
+          return false;
+        }
+      });
+      return {
+        observation: current ?? observation,
+        verified,
+        allowedControls,
+        canFill:
+          current?.headings.some((t) => t.name === "Member search") ?? false,
+      };
     };
     const server = http.createServer(async (req, res) => {
       res.setHeader("Cache-Control", "no-store");
@@ -75,7 +96,7 @@ export class Handoff {
       const path = req.url?.split("?")[0];
       if (path === "/" && req.method === "GET") {
         res.setHeader("Content-Type", "text/html");
-        res.end(html);
+        res.end(operatorHtml);
         return;
       }
       if (req.headers.authorization !== "Bearer " + token) {
@@ -94,6 +115,7 @@ export class Handoff {
         return;
       }
       if (path === "/state" && req.method === "GET") {
+        const view = await inspect();
         reply(200, {
           capabilityId: "member-savings-balance",
           id,
@@ -101,7 +123,10 @@ export class Handoff {
           step,
           sessionId: this.surface.sessionId,
           owner: this.surface.owner,
-          observation: await this.surface.observe().catch(() => observation),
+          observation: view.observation,
+          canResume: this.surface.owner === "human" && !busy && view.verified,
+          allowedControls: view.allowedControls,
+          canFill: view.canFill,
         });
         return;
       }
@@ -152,10 +177,13 @@ export class Handoff {
             "operator_intervention",
           );
           await this.onAction?.(action, await this.surface.observe());
+          manualActions++;
           reply(200, { ok: true });
         } else if (path === "/resume" || path === "/abort") {
           if (this.surface.owner !== "human")
             throw new Fault("CONTROL_NOT_OWNED");
+          if (path === "/resume" && !(await inspect()).verified)
+            throw new Fault("RECOVERY_NOT_VERIFIED");
           await this.evidence.event(
             path === "/resume" ? "control_released" : "operator_aborted",
             { id, actor: "human", sessionId: this.surface.sessionId },

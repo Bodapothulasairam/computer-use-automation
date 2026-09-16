@@ -32,6 +32,37 @@ npm run replay -- --artifact runs/my-discovery/capability.json --member 67890 --
 
 Each command starts and closes its own real local app and isolated Chromium session. The artifact contains the entry path, never a machine-specific host or port. You can also run `npm run app` and pass `--target http://127.0.0.1:4173/app` to discovery. Only the configured ledger profile is supported; this is not a general-purpose arbitrary-website agent.
 
+## Visible demo speed and guided handoff
+
+Run the visible demo with readable defaults:
+
+```powershell
+npm.cmd run demo -- --headed --out runs/manual-demo
+```
+
+Headed commands wait **2 seconds before each automation action** and hold each result screen for **5 seconds** before closing its browser. The current target is highlighted and a status strip describes the action. Headless runs keep their fast defaults.
+
+Override the timing when presenting:
+
+```powershell
+npm.cmd run demo -- --headed --action-delay-ms 3000 --final-hold-ms 10000 --out runs/manual-demo
+```
+
+Both values are milliseconds. Action delay accepts 0–10000 and final hold accepts 0–30000. Use 0 for both to turn presentation delays off. These settings change presentation only, not recorded capabilities or policy decisions.
+
+The operator console enforces the sequence:
+
+| State | Available action |
+| --- | --- |
+| Before claim | **Claim control**; Restore and Resume are disabled |
+| Claimed, unresolved | **Restore session**; Resume remains disabled |
+| Recovery verified | **Resume automation**; the completed recovery action disappears |
+| Resumed or stopped | All intervention controls are disabled |
+
+The server independently rejects premature resume requests. Replay requires the paused checkpoint to match before the console enables Resume. The responsive banking and operator screens retain the iframe/table targeting used by existing artifacts. Form labels, instructions, status feedback, and keyboard focus follow [W3C WAI form guidance](https://www.w3.org/WAI/tutorials/forms/); no formal accessibility conformance audit is claimed.
+
+After source updates, stop an old `npm run app` process with Ctrl+C, start it again, and refresh your browser.
+
 ## Run without live services
 
 Use the committed, genuinely discovered artifact:

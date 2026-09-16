@@ -15,6 +15,7 @@ import type {
   Status,
 } from "./schema.js";
 import type { Evidence } from "./evidence.js";
+import { pause, type Presentation } from "./presentation.js";
 export interface Surface {
   readonly sessionId: string;
   observe(): Promise<Observation>;
@@ -48,6 +49,7 @@ export class BrowserSurface implements Surface {
   constructor(
     readonly policy: Policy,
     readonly evidence: Evidence,
+    readonly presentation: Presentation = { actionDelayMs: 0, finalHoldMs: 0 },
   ) {
     this.sessionId = evidence.runId;
   }
@@ -57,6 +59,7 @@ export class BrowserSurface implements Surface {
     this.context = await this.browser.newContext({
       serviceWorkers: "block",
       acceptDownloads: false,
+      viewport: { width: 1280, height: 840 },
     });
     this.context.setDefaultTimeout(this.policy.config.stepTimeoutMs);
     await this.context.addCookies([
@@ -203,6 +206,15 @@ export class BrowserSurface implements Surface {
     this.policy.url(this.page.url());
     if (this.networkViolation) throw new Fault("NETWORK_DENIED");
     const l = await this.unique(a.target);
+    if (actor === "automation" && this.presentation.actionDelayMs > 0) {
+      await this.presentStatus(
+        (a.kind === "fill" ? "Entering " : "Next action: ") + a.target.name,
+      );
+      await l.evaluate((el) => el.setAttribute("data-active-action", ""));
+      await pause(this.presentation.actionDelayMs);
+      await l.evaluate((el) => el.removeAttribute("data-active-action"));
+      if (this.owner !== actor) throw new Fault("CONTROL_NOT_OWNED");
+    }
     if (a.kind === "fill") {
       const value = params[a.parameter];
       if (value === undefined) throw new Fault("MISSING_PARAMETER");
@@ -244,8 +256,20 @@ export class BrowserSurface implements Surface {
       throw new Fault("OUTPUT_TYPE_MISMATCH");
     return text;
   }
+  async presentStatus(message: string) {
+    if (!this.page || this.page.isClosed()) return;
+    const label = this.page.locator("[data-run-status]");
+    if (await label.count())
+      await label
+        .evaluate((el, text) => {
+          el.textContent = text;
+        }, message)
+        .catch(() => {});
+  }
   async close() {
     this.owner = "closed";
+    if (this.page && !this.page.isClosed())
+      await pause(this.presentation.finalHoldMs);
     await this.browser?.close();
   }
 }

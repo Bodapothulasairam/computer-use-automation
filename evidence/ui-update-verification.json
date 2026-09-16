@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-09-16T19:02:06.612Z",
+  "unitAndIntegration": {
+    "command": "npm run verify",
+    "tests": 34,
+    "passed": 34,
+    "failed": 0,
+    "typecheck": "passed"
+  },
+  "operatorUI": {
+    "command": "npm run test:handoff",
+    "status": "passed",
+    "runId": "87c4add4-77a8-4dc2-9e65-06b00c046a31",
+    "checks": [
+      "restore and resume disabled before claim",
+      "resume rejected before recovery via API",
+      "resume enabled only after verified checkpoint",
+      "same session resumes",
+      "desktop and mobile without horizontal overflow"
+    ]
+  },
+  "visibleDemo": {
+    "command": "npm.cmd run demo -- --headed --out runs/ui-refresh-demo",
+    "status": "passed",
+    "actionDelayMs": 2000,
+    "finalHoldMs": 5000,
+    "evidence": "ui-refresh-demo/demo-summary.json"
+  },
+  "screenshotsReviewed": [
+    "operator-before-claim.png",
+    "operator-console.png",
+    "operator-ready.png",
+    "operator-mobile.png",
+    "runs/ui/member-search-desktop.png",
+    "runs/ui/member-search-mobile.png",
+    "runs/ui/balance-summary-desktop.png"
+  ]
+}
