@@ -1,0 +1,39 @@
+{
+  "status": "failure",
+  "runId": "c86a97a3-ca88-4cb7-86fa-db70b21f6a27",
+  "code": "OUTPUT_TYPE_MISMATCH",
+  "step": "success",
+  "expected": "Balance summary",
+  "observed": {
+    "route": "/legacy/summary",
+    "status": "ready",
+    "controls": [],
+    "fields": [
+      {
+        "frame": "workspace",
+        "strategy": "table-label",
+        "name": "Member number"
+      },
+      {
+        "frame": "workspace",
+        "strategy": "table-label",
+        "name": "Savings balance"
+      },
+      {
+        "frame": "workspace",
+        "strategy": "table-label",
+        "name": "Currency"
+      }
+    ],
+    "headings": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "heading",
+        "name": "Balance summary"
+      }
+    ],
+    "filled": []
+  },
+  "interventionId": "9b30c711-0791-4eac-b8dc-47607579a17c"
+}

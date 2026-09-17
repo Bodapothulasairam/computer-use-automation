@@ -1,0 +1,30 @@
+{
+  "status": "failure",
+  "runId": "eb191c4d-4518-4fb4-ae49-7d47be0c0c0f",
+  "code": "SESSION_EXPIRED",
+  "step": "step-2",
+  "expected": "Member details",
+  "observed": {
+    "route": "/legacy/member",
+    "status": "session_expired",
+    "controls": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "link",
+        "name": "Restore session"
+      }
+    ],
+    "fields": [],
+    "headings": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "heading",
+        "name": "Session expired"
+      }
+    ],
+    "filled": []
+  },
+  "interventionId": "4553007d-b47e-4407-97ab-f329fc8bbf95"
+}

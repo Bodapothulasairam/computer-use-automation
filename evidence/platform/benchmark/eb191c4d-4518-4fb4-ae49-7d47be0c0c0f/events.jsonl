@@ -1,0 +1,10 @@
+{"at":"2026-09-17T04:41:45.768Z","runId":"eb191c4d-4518-4fb4-ae49-7d47be0c0c0f","event":"start","mode":"replay"}
+{"at":"2026-09-17T04:41:45.770Z","runId":"eb191c4d-4518-4fb4-ae49-7d47be0c0c0f","event":"artifact","id":"member-savings-balance","version":"1.0.0","digest":"83f29c3aff6a0a781485144554168068985938df9c2e66109250f81e00dfcc60"}
+{"at":"2026-09-17T04:41:46.174Z","runId":"eb191c4d-4518-4fb4-ae49-7d47be0c0c0f","event":"preflight","variant":"classic","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:41:46.180Z","runId":"eb191c4d-4518-4fb4-ae49-7d47be0c0c0f","event":"action","step":"step-1","actor":"automation","kind":"fill","target":{"frame":"workspace","strategy":"table-label","name":"Member number"},"parameter":"memberId","reason":"deterministic_replay"}
+{"at":"2026-09-17T04:41:46.201Z","runId":"eb191c4d-4518-4fb4-ae49-7d47be0c0c0f","event":"preflight","variant":"classic","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:41:46.231Z","runId":"eb191c4d-4518-4fb4-ae49-7d47be0c0c0f","event":"checkpoint","step":"step-1","expected":"Member search","passed":true}
+{"at":"2026-09-17T04:41:46.237Z","runId":"eb191c4d-4518-4fb4-ae49-7d47be0c0c0f","event":"action","step":"step-2","actor":"automation","kind":"click","target":{"frame":"workspace","strategy":"role","role":"button","name":"Search"},"reason":"deterministic_replay"}
+{"at":"2026-09-17T04:41:46.257Z","runId":"eb191c4d-4518-4fb4-ae49-7d47be0c0c0f","event":"preflight","variant":"classic","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:41:46.391Z","runId":"eb191c4d-4518-4fb4-ae49-7d47be0c0c0f","event":"intervention_queued","capabilityId":"member-savings-balance","id":"4553007d-b47e-4407-97ab-f329fc8bbf95","reason":"SESSION_EXPIRED","step":"step-2","sessionId":"eb191c4d-4518-4fb4-ae49-7d47be0c0c0f","liveSessionAvailable":false}
+{"at":"2026-09-17T04:41:46.405Z","runId":"eb191c4d-4518-4fb4-ae49-7d47be0c0c0f","event":"finish","status":"failure","code":"SESSION_EXPIRED"}

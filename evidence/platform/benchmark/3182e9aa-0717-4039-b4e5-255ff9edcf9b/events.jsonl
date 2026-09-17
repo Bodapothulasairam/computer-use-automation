@@ -1,0 +1,9 @@
+{"at":"2026-09-17T04:41:17.765Z","runId":"3182e9aa-0717-4039-b4e5-255ff9edcf9b","event":"start","mode":"replay"}
+{"at":"2026-09-17T04:41:17.779Z","runId":"3182e9aa-0717-4039-b4e5-255ff9edcf9b","event":"artifact","id":"member-savings-balance","version":"1.0.0","digest":"83f29c3aff6a0a781485144554168068985938df9c2e66109250f81e00dfcc60"}
+{"at":"2026-09-17T04:41:18.348Z","runId":"3182e9aa-0717-4039-b4e5-255ff9edcf9b","event":"preflight","variant":"cards","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:41:18.355Z","runId":"3182e9aa-0717-4039-b4e5-255ff9edcf9b","event":"action","step":"step-1","actor":"automation","kind":"fill","target":{"frame":"workspace","strategy":"table-label","name":"Member number"},"parameter":"memberId","reason":"deterministic_replay"}
+{"at":"2026-09-17T04:41:18.382Z","runId":"3182e9aa-0717-4039-b4e5-255ff9edcf9b","event":"preflight","variant":"cards","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:41:18.415Z","runId":"3182e9aa-0717-4039-b4e5-255ff9edcf9b","event":"checkpoint","step":"step-1","expected":"Member search","passed":true}
+{"at":"2026-09-17T04:41:18.422Z","runId":"3182e9aa-0717-4039-b4e5-255ff9edcf9b","event":"action","step":"step-2","actor":"automation","kind":"click","target":{"frame":"workspace","strategy":"role","role":"button","name":"Search"},"reason":"deterministic_replay"}
+{"at":"2026-09-17T04:41:18.446Z","runId":"3182e9aa-0717-4039-b4e5-255ff9edcf9b","event":"preflight","variant":"cards","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:41:18.649Z","runId":"3182e9aa-0717-4039-b4e5-255ff9edcf9b","event":"finish","status":"business_outcome","code":"NOT_FOUND"}

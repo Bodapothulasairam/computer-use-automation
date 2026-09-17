@@ -1,0 +1,4 @@
+{"at":"2026-09-17T04:42:06.011Z","runId":"674b36d5-220a-40e1-aa1c-e37ffda1e6e4","event":"start","mode":"replay"}
+{"at":"2026-09-17T04:42:06.014Z","runId":"674b36d5-220a-40e1-aa1c-e37ffda1e6e4","event":"artifact","id":"member-savings-balance","version":"1.0.0","digest":"83f29c3aff6a0a781485144554168068985938df9c2e66109250f81e00dfcc60"}
+{"at":"2026-09-17T04:42:06.592Z","runId":"674b36d5-220a-40e1-aa1c-e37ffda1e6e4","event":"intervention_queued","capabilityId":"member-savings-balance","id":"63b45522-cbab-415a-9cf8-7d62e58d6045","reason":"UI_DRIFT","step":"initialize","sessionId":"674b36d5-220a-40e1-aa1c-e37ffda1e6e4","liveSessionAvailable":false}
+{"at":"2026-09-17T04:42:06.652Z","runId":"674b36d5-220a-40e1-aa1c-e37ffda1e6e4","event":"finish","status":"failure","code":"UI_DRIFT"}

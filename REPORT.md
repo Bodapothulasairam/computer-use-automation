@@ -21,6 +21,11 @@ flowchart LR
 
 The model sees approved labels, available controls, headings and filled flags, not field values, balances, raw HTML or screenshots. The input/output contract is chosen by the supported capability profile; the model discovers the UI sequence rather than inventing a contract. This intentionally narrows scope to one real, tested integration.
 
+The verification platform wraps this engine with a local authenticated control API,
+release registry and evidence console. Two reviewed layouts share canonical workflow
+semantics. The architecture and trust boundaries are documented in ARCHITECTURE.md;
+SECURITY_REVIEW.md records the self-review, corrections and remaining limits.
+
 ## Artifact schema
 
 The strict, versioned artifact defines capability identity and version, vendor product/profile/version, relative entry path, typed inputs and outputs, ordered actions, per-step checkpoints, a final success condition and provenance. A fill stores a parameter reference, never the concrete member number. Output declarations carry extraction targets and sensitivity. A published JSON Schema supports review; Zod and profile validation additionally reject dangling parameters, duplicate step IDs, unsupported versions, unapproved controls and forged final checkpoints.
@@ -28,6 +33,12 @@ The strict, versioned artifact defines capability identity and version, vendor p
 Targets describe semantics: frame plus exact role/name, or the relationship between a table's label cell and value/control cell. Neither generated IDs nor recorded coordinates are used. A locator must resolve uniquely; ambiguity stops execution. The frame boundary and table relationship are deliberate robustness decisions, not a fallback to whichever element matches first.
 
 Artifacts contain concise action rationale codes and provider/run provenance, not model transcripts. A real API response ID and usage receipt are recorded in discovery logs. Test fixtures carry distinct provenance. The artifact has no deployment origin, credentials, input values or tenant identity.
+
+The registry preserves immutable versions and SHA-256 digests. Candidates must pass
+a server-executed 38-case matrix before reviewer approval, then explicit activation.
+Rollback selects a previously active approved version. Validation binds both the
+artifact and trusted runner/policy/dependency digest; a changed runner invalidates
+old approvals at startup. Hashes detect corruption, not malicious local admins.
 
 ## Determinism & error handling
 
@@ -37,11 +48,25 @@ The result is a discriminated union. Missing members and app validation errors a
 
 No model assists replay. Timing is bounded rather than literally identical; deterministic means fixed decisions, targeting and recovery rules for a given state. Tests include changed parameters, business outcomes, recovery exhaustion, hard failures, invalid artifacts, forged checkpoints, deadlines, ownership, resumed discovery, and the actual operator UI.
 
+A seeded benchmark runs all 19 scenario classes on both layouts with injected
+delays and an independent expected-outcome/output oracle. Every trial is retained;
+none is silently retried. Reports separate correct denials, incorrect success,
+recovery success, and latency. Model construction is explicitly forbidden for replay;
+attempts are counted at the model provider boundary. Recorded metrics are finite
+synthetic measurements, not estimates of real-bank production reliability.
+
 ## Heterogeneity & multi-tenant
 
 The Surface contract separates observe, perform, check and extract from flow semantics. The implemented adapter knows how to map semantic targets to iframe/table DOM relationships. A desktop adapter could map the same operations to UI Automation/AX control paths; a pixel-only adapter would need versioned visual anchors, confidence thresholds and explicit ambiguity rejection. Such adapters are not implemented, and today's target schema would need a new backward-compatible target variant.
 
-For reuse, keep a vendor/version capability separate from a tenant binding: origin, credential reference, locale and reviewed control-label overrides. Bindings must not widen policy. A versioned profile should carry a surface fingerprint and required control contracts. Validate those in a read-only preflight and replay a canary before rollout. Unknown variants fail closed and create a review request; do not silently repair production flows. Store an immutable base artifact plus reviewed, narrowly scoped overrides and per-variant evidence. Current code binds an origin and validates a profile but does not claim production tenant management or automatic version-drift detection.
+For reuse, keep a vendor/version capability separate from a tenant binding: origin,
+credential reference, locale and reviewed control-label overrides. The implementation
+now includes a classic iframe/table layout and a card layout using definition lists
+and renamed labels. Trusted bindings map both to canonical targets without widening
+policy. Read-only preflight checks the layout marker and required control contracts;
+unknown/missing contracts fail with UI_DRIFT, and ambiguous targets stop. These are
+two synthetic layouts of one product, not production tenant management or arbitrary
+vendor support. Desktop and pixel-only adapters remain design-only.
 
 ## Escalation & handoff
 
@@ -51,6 +76,12 @@ The server serializes mutating requests and rejects unauthorized, unclaimed, dup
 
 The UI is minimal; the mechanism is real. An automated stand-in clicks the console in the evidence demonstration. No human participation is falsely claimed. A production operator service needs authenticated identity, durable leases, access controls and isolated session workers.
 
+The new verification console exposes release controls, scenario selection, job
+progress and a redacted event timeline. Server-side lifecycle/role checks complement
+disabled controls. Its automated session-recovery scenario is explicitly labelled;
+the existing handoff CLI remains the path for an actual person to claim and control
+the live browser.
+
 ## Safety
 
 An explicit policy constrains exact origin/routes, query keys, HTTP method, action kinds and semantic controls. Every browser request is checked; popups, downloads, service workers and WebSockets are blocked. Link/form destinations are checked before clicks. Risk comes from trusted profile code, never from the model or artifact: transfers are blocked for both automation and operators. Page content is data, not authority.
@@ -59,8 +90,23 @@ Persistence uses approved fields rather than attempting to scrub arbitrary dumps
 
 These controls are not a complete security boundary against a malicious application: a permitted control or GET endpoint could itself cause a side effect. Production needs independently reviewed app profiles, network isolation, hardened browser workers, data classification and provider retention agreements. This implementation uses only a controlled synthetic app.
 
+The control API accepts strict bounded JSON and fixed scenario/layout enums, never
+caller-provided origins, policy or paths. It checks role, Host and Origin, bounds
+request rate/concurrency, and uses safe DOM text in its console. In-memory authenticated
+job results contain typed outputs; saved evidence redacts them. Registry writes use
+atomic replacement and a process lock, with rollback of memory state on write failure.
+
 ## Cuts
 
-One read-only capability, one vendor profile, one browser surface and a local operator console are implemented. No real bank integration, arbitrary-site discovery, desktop adapter, multi-tenant infrastructure, screenshot/OCR targeting, credential login, signed artifact approval or production operator authentication is claimed. Native dialogs are dismissed and surfaced as failures; only known HTML interstitials recover automatically.
+One read-only capability, one vendor profile with two reviewed layouts, one browser
+surface, local operator and verification consoles, a capability API, and reviewed
+release lifecycle are implemented. No real bank integration, arbitrary-site discovery,
+desktop adapter, multi-tenant infrastructure, screenshot/OCR targeting, credential
+login, cryptographically signed artifact approval or production operator identity is
+claimed. Native dialogs fail closed; known HTML interstitials recover within limits.
 
-The priority was a complete trace from genuine model discovery to reusable artifact, no-model replay, exceptional outcomes, live takeover and evidence. Next would be immutable reviewed artifact releases, broader profile contracts, bounded session renewal, deployment-specific retention and a second vendor/tenant variant. Scaling workers comes after those correctness and isolation boundaries are proven.
+The priority remains a complete verifiable trace from genuine discovery through
+reusable artifacts, no-model replay, exceptional outcomes and live takeover. Next
+would be a real second-vendor adapter, named operator identity, signed releases,
+deployment-specific retention and hardened isolated workers. The current service
+is loopback-only and recent jobs are memory-only; these limits are explicit.

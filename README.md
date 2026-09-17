@@ -2,6 +2,84 @@
 
 A small computer-use backend for a synthetic bank servicing app. An OpenAI model discovers a real browser workflow; the resulting typed capability replays without any model. The demo app uses an iframe and table-labelled inputs, without test IDs.
 
+The verification platform adds **two reviewed layouts, incompatible-UI detection,
+a reproducible benchmark, an evidence console, immutable release approval/rollback,
+and an authenticated capability API**. It remains a local synthetic assessment,
+not a production bank integration.
+
+![Verification console](evidence/platform/console-evidence.png)
+
+## Reviewer quickstart (no API key needed)
+
+After installing dependencies below:
+
+```powershell
+npm.cmd run console
+```
+
+Open the private **Reviewer console** URL printed in your terminal. On first launch:
+**Validate 38 scenarios → Approve release → Activate release → Run approved workflow**.
+Validation takes about a minute on the development machine; it launches real
+Chromium runs, not canned results. The UI enforces sequencing and the server checks
+it independently. Try the card layout, session recovery, permission denial and UI
+drift scenarios. Inspect checkpoints, control ownership and zero-model metrics.
+
+For a new evaluation workspace use `npm.cmd run console -- --dir runs/reviewer-new`.
+The default port is 4180; override with `--port 4181`. The separate Runner URL can
+invoke active releases but cannot change their lifecycle. Both tokens are temporary
+local role credentials, not production identity management.
+
+Reproduce the reliability measurement:
+
+```powershell
+npm.cmd run benchmark -- --count 100 --seed 20260916 --out runs/my-benchmark
+```
+
+The report retains **every trial**, exact expected/actual outcomes, artifact and
+runner digests, recovery rate, unsafe-success count, model calls, and latency
+percentiles. A correct permission denial is counted as the expected outcome, not a
+successful balance lookup. The seed reproduces scenario order and injected delays,
+not elapsed times. See [recorded results](evidence/platform/README.md), the
+[manual checklist](MANUAL_TESTS.md), [architecture](ARCHITECTURE.md), and
+[security self-review](SECURITY_REVIEW.md).
+
+## Capability API
+
+The API binds to 127.0.0.1 and starts its own synthetic bank app. It accepts no
+external URL or policy override. Use the token from the Runner URL fragment in an
+`Authorization: Bearer ...` header. Never put it in source control.
+
+| Endpoint | Role | Purpose |
+| --- | --- | --- |
+| `GET /api/capabilities` | Runner / reviewer | Active approved capabilities and contracts |
+| `POST /api/invoke` | Runner / reviewer | Start a replay job; returns 202 with job ID |
+| `GET /api/jobs/{id}` | Runner / reviewer | Status and typed result in memory |
+| `GET /api/runs/{id}` | Runner / reviewer | Redacted events, metrics and saved result |
+| `GET /api/releases` | Reviewer | Releases and audit history |
+| `POST /api/releases/import` | Reviewer | Import an immutable candidate artifact |
+| `POST /api/releases/validate` | Reviewer | Run the server validation matrix |
+| `POST /api/releases/approve` | Reviewer | Approve a validated candidate |
+| `POST /api/releases/activate` | Reviewer | Select an approved version |
+| `POST /api/releases/rollback` | Reviewer | Restore a previously activated version |
+
+Invocation body:
+
+```json
+{"id":"member-savings-balance","memberId":"67890","variant":"cards","scenario":"normal"}
+```
+
+Lifecycle bodies use `id` and `version`; import accepts the capability object.
+The complete [OpenAPI document](schema/control.openapi.json) is also served at
+authenticated `GET /api/openapi`. One execution is allowed at a time; competing
+mutations return 409. Bodies are bounded to 64 KiB. Model credentials are never
+needed by this API. Direct replay/discovery CLI commands remain developer tools;
+the approval gate applies to the control API.
+
+Releases and validation references survive restarts. Recent jobs and unredacted API
+outputs are memory-only. A changed trusted runner/policy/dependency digest revokes
+old approvals on startup and requires revalidation. After a process crash, confirm
+it has stopped before removing its empty `runs/control/registry/.lock` directory.
+
 ## Setup
 
 Requires Node.js 22 or newer and npm. Tested on Windows with Node.js 24.

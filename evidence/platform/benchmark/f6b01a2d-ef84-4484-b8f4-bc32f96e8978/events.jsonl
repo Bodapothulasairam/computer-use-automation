@@ -1,0 +1,15 @@
+{"at":"2026-09-17T04:41:14.127Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"start","mode":"replay"}
+{"at":"2026-09-17T04:41:14.138Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"artifact","id":"member-savings-balance","version":"1.0.0","digest":"83f29c3aff6a0a781485144554168068985938df9c2e66109250f81e00dfcc60"}
+{"at":"2026-09-17T04:41:14.722Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"preflight","variant":"cards","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:41:14.727Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"action","step":"step-1","actor":"automation","kind":"fill","target":{"frame":"workspace","strategy":"table-label","name":"Member number"},"parameter":"memberId","reason":"deterministic_replay"}
+{"at":"2026-09-17T04:41:14.748Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"preflight","variant":"cards","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:41:14.786Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"checkpoint","step":"step-1","expected":"Member search","passed":true}
+{"at":"2026-09-17T04:41:14.795Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"action","step":"step-2","actor":"automation","kind":"click","target":{"frame":"workspace","strategy":"role","role":"button","name":"Search"},"reason":"deterministic_replay"}
+{"at":"2026-09-17T04:41:14.827Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"preflight","variant":"cards","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:41:15.021Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"checkpoint","step":"step-2","expected":"Member details","passed":true}
+{"at":"2026-09-17T04:41:15.033Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"action","step":"step-3","actor":"automation","kind":"click","target":{"frame":"workspace","strategy":"role","role":"link","name":"Balance summary"},"reason":"deterministic_replay"}
+{"at":"2026-09-17T04:41:15.067Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"preflight","variant":"cards","stage":"Member details","passed":true}
+{"at":"2026-09-17T04:41:15.216Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"checkpoint","step":"step-3","expected":"Balance summary","passed":true}
+{"at":"2026-09-17T04:41:15.226Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"checkpoint","step":"success","expected":"Balance summary","passed":true}
+{"at":"2026-09-17T04:41:15.241Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"intervention_queued","capabilityId":"member-savings-balance","id":"0f3c012a-d2cd-4c76-93d0-7fd83e5ba310","reason":"UI_DRIFT","step":"success","sessionId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","liveSessionAvailable":false}
+{"at":"2026-09-17T04:41:15.256Z","runId":"f6b01a2d-ef84-4484-b8f4-bc32f96e8978","event":"finish","status":"failure","code":"UI_DRIFT"}

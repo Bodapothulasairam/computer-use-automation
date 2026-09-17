@@ -6,6 +6,10 @@ import type { Observation, RunResult, Action } from "./schema.js";
 // Deliberate allowlist: never serialize Error objects, model free text, input values,
 // page text, URLs with queries, screenshots, response bodies, or extracted outputs.
 export class Evidence {
+  readonly started = performance.now();
+  modelCalls = 0;
+  recoveryAttempts = 0;
+  actions = 0;
   readonly runId = randomUUID();
   readonly dir: string;
   constructor(
@@ -19,6 +23,8 @@ export class Evidence {
     await this.event("start", { mode: this.mode });
   }
   async event(event: string, data: Record<string, unknown> = {}) {
+    if (event === "recovery") this.recoveryAttempts++;
+    if (event === "action") this.actions++;
     await appendFile(
       path.join(this.dir, "events.jsonl"),
       JSON.stringify({
@@ -63,6 +69,23 @@ export class Evidence {
       path.join(this.dir, "result.json"),
       JSON.stringify(safe, null, 2),
     );
-    await this.event("finish", { status: result.status });
+    await this.event("finish", {
+      status: result.status,
+      code: "code" in result ? result.code : undefined,
+    });
+    await writeFile(
+      path.join(this.dir, "metrics.json"),
+      JSON.stringify(
+        {
+          mode: this.mode,
+          durationMs: Math.round(performance.now() - this.started),
+          modelCalls: this.modelCalls,
+          recoveryAttempts: this.recoveryAttempts,
+          actions: this.actions,
+        },
+        null,
+        2,
+      ),
+    );
   }
 }

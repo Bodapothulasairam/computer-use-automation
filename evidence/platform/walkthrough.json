@@ -1,0 +1,8 @@
+{
+  "operator": "automated UI demonstration",
+  "validationCases": 38,
+  "passed": true,
+  "video": "walkthrough.webm",
+  "scenario": "handoff",
+  "variant": "cards"
+}

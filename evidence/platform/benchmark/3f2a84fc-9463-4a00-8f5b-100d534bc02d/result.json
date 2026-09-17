@@ -1,0 +1,30 @@
+{
+  "status": "failure",
+  "runId": "3f2a84fc-9463-4a00-8f5b-100d534bc02d",
+  "code": "RECOVERY_EXHAUSTED",
+  "step": "step-2",
+  "expected": "Member details",
+  "observed": {
+    "route": "/legacy/member",
+    "status": "notice",
+    "controls": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "link",
+        "name": "Continue"
+      }
+    ],
+    "fields": [],
+    "headings": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "heading",
+        "name": "Service notice"
+      }
+    ],
+    "filled": []
+  },
+  "interventionId": "cfa88875-dc48-4bca-b36a-700ebf383e8d"
+}

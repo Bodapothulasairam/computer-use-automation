@@ -38,7 +38,12 @@
           "const": "/app"
         }
       },
-      "required": ["product", "version", "profile", "entryPath"],
+      "required": [
+        "product",
+        "version",
+        "profile",
+        "entryPath"
+      ],
       "additionalProperties": false
     },
     "inputs": {
@@ -63,7 +68,12 @@
             "type": "string"
           }
         },
-        "required": ["type", "pattern", "sensitive", "description"],
+        "required": [
+          "type",
+          "pattern",
+          "sensitive",
+          "description"
+        ],
         "additionalProperties": false
       }
     },
@@ -77,7 +87,10 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["number", "string"]
+            "enum": [
+              "number",
+              "string"
+            ]
           },
           "sensitive": {
             "type": "boolean"
@@ -91,11 +104,18 @@
               },
               "strategy": {
                 "type": "string",
-                "enum": ["role", "table-label"]
+                "enum": [
+                  "role",
+                  "table-label"
+                ]
               },
               "role": {
                 "type": "string",
-                "enum": ["button", "link", "heading"]
+                "enum": [
+                  "button",
+                  "link",
+                  "heading"
+                ]
               },
               "name": {
                 "type": "string",
@@ -103,11 +123,19 @@
                 "maxLength": 80
               }
             },
-            "required": ["frame", "strategy", "name"],
+            "required": [
+              "frame",
+              "strategy",
+              "name"
+            ],
             "additionalProperties": false
           }
         },
-        "required": ["type", "sensitive", "target"],
+        "required": [
+          "type",
+          "sensitive",
+          "target"
+        ],
         "additionalProperties": false
       }
     },
@@ -139,11 +167,18 @@
                       },
                       "strategy": {
                         "type": "string",
-                        "enum": ["role", "table-label"]
+                        "enum": [
+                          "role",
+                          "table-label"
+                        ]
                       },
                       "role": {
                         "type": "string",
-                        "enum": ["button", "link", "heading"]
+                        "enum": [
+                          "button",
+                          "link",
+                          "heading"
+                        ]
                       },
                       "name": {
                         "type": "string",
@@ -151,7 +186,11 @@
                         "maxLength": 80
                       }
                     },
-                    "required": ["frame", "strategy", "name"],
+                    "required": [
+                      "frame",
+                      "strategy",
+                      "name"
+                    ],
                     "additionalProperties": false
                   },
                   "parameter": {
@@ -159,7 +198,11 @@
                     "pattern": "^[a-zA-Z]\\w*$"
                   }
                 },
-                "required": ["kind", "target", "parameter"],
+                "required": [
+                  "kind",
+                  "target",
+                  "parameter"
+                ],
                 "additionalProperties": false
               },
               {
@@ -178,11 +221,18 @@
                       },
                       "strategy": {
                         "type": "string",
-                        "enum": ["role", "table-label"]
+                        "enum": [
+                          "role",
+                          "table-label"
+                        ]
                       },
                       "role": {
                         "type": "string",
-                        "enum": ["button", "link", "heading"]
+                        "enum": [
+                          "button",
+                          "link",
+                          "heading"
+                        ]
                       },
                       "name": {
                         "type": "string",
@@ -190,11 +240,18 @@
                         "maxLength": 80
                       }
                     },
-                    "required": ["frame", "strategy", "name"],
+                    "required": [
+                      "frame",
+                      "strategy",
+                      "name"
+                    ],
                     "additionalProperties": false
                   }
                 },
-                "required": ["kind", "target"],
+                "required": [
+                  "kind",
+                  "target"
+                ],
                 "additionalProperties": false
               }
             ]
@@ -211,11 +268,18 @@
                   },
                   "strategy": {
                     "type": "string",
-                    "enum": ["role", "table-label"]
+                    "enum": [
+                      "role",
+                      "table-label"
+                    ]
                   },
                   "role": {
                     "type": "string",
-                    "enum": ["button", "link", "heading"]
+                    "enum": [
+                      "button",
+                      "link",
+                      "heading"
+                    ]
                   },
                   "name": {
                     "type": "string",
@@ -223,7 +287,11 @@
                     "maxLength": 80
                   }
                 },
-                "required": ["frame", "strategy", "name"],
+                "required": [
+                  "frame",
+                  "strategy",
+                  "name"
+                ],
                 "additionalProperties": false
               },
               "condition": {
@@ -231,7 +299,10 @@
                 "const": "visible"
               }
             },
-            "required": ["target", "condition"],
+            "required": [
+              "target",
+              "condition"
+            ],
             "additionalProperties": false
           },
           "rationale": {
@@ -239,7 +310,12 @@
             "maxLength": 160
           }
         },
-        "required": ["id", "action", "expect", "rationale"],
+        "required": [
+          "id",
+          "action",
+          "expect",
+          "rationale"
+        ],
         "additionalProperties": false
       }
     },
@@ -255,11 +331,18 @@
             },
             "strategy": {
               "type": "string",
-              "enum": ["role", "table-label"]
+              "enum": [
+                "role",
+                "table-label"
+              ]
             },
             "role": {
               "type": "string",
-              "enum": ["button", "link", "heading"]
+              "enum": [
+                "button",
+                "link",
+                "heading"
+              ]
             },
             "name": {
               "type": "string",
@@ -267,7 +350,11 @@
               "maxLength": 80
             }
           },
-          "required": ["frame", "strategy", "name"],
+          "required": [
+            "frame",
+            "strategy",
+            "name"
+          ],
           "additionalProperties": false
         },
         "condition": {
@@ -275,7 +362,10 @@
           "const": "visible"
         }
       },
-      "required": ["target", "condition"],
+      "required": [
+        "target",
+        "condition"
+      ],
       "additionalProperties": false
     },
     "provenance": {
@@ -283,7 +373,10 @@
       "properties": {
         "kind": {
           "type": "string",
-          "enum": ["live-llm", "test-fixture"]
+          "enum": [
+            "live-llm",
+            "test-fixture"
+          ]
         },
         "model": {
           "type": "string"
@@ -299,7 +392,12 @@
           "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
         }
       },
-      "required": ["kind", "model", "runId", "createdAt"],
+      "required": [
+        "kind",
+        "model",
+        "runId",
+        "createdAt"
+      ],
       "additionalProperties": false
     }
   },

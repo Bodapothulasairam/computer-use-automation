@@ -1,0 +1,37 @@
+{
+  "format": "redacted-semantic-dom-v1",
+  "observation": {
+    "route": "/legacy/member",
+    "status": "ready",
+    "controls": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "button",
+        "name": "Transfer funds"
+      },
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "link",
+        "name": "Balance summary"
+      }
+    ],
+    "fields": [
+      {
+        "frame": "workspace",
+        "strategy": "table-label",
+        "name": "Member number"
+      }
+    ],
+    "headings": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "heading",
+        "name": "Member details"
+      }
+    ],
+    "filled": []
+  }
+}

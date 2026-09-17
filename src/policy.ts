@@ -70,7 +70,12 @@ export class Policy {
     readonly config: PolicyConfig,
   ) {
     const u = new URL(origin);
-    if (u.origin !== origin || u.username || u.password)
+    if (
+      !["http:", "https:"].includes(u.protocol) ||
+      u.origin !== origin ||
+      u.username ||
+      u.password
+    )
       throw new Fault("INVALID_ORIGIN");
   }
   url(value: string) {
@@ -131,6 +136,17 @@ export class Policy {
       if (!["Savings balance", "Currency"].includes(out.target.name))
         throw new Fault("OUTPUT_DENIED");
     }
+    if (
+      Object.keys(a.outputs).sort().join() !== "currency,savingsBalance" ||
+      a.outputs.savingsBalance?.type !== "number" ||
+      a.outputs.savingsBalance.target.name !== "Savings balance" ||
+      a.outputs.savingsBalance.target.strategy !== "table-label" ||
+      !a.outputs.savingsBalance.sensitive ||
+      a.outputs.currency?.type !== "string" ||
+      a.outputs.currency.target.name !== "Currency" ||
+      a.outputs.currency.target.strategy !== "table-label"
+    )
+      throw new Fault("CONTRACT_MISMATCH");
     if (
       Object.keys(a.inputs).join() !== "memberId" ||
       a.inputs.memberId?.pattern !== "^[0-9]{5}$" ||

@@ -1,0 +1,9 @@
+{
+  "status": "failure",
+  "runId": "2bc25559-c879-4ce9-8ed9-65f34d23c3cf",
+  "code": "INVALID_INPUT",
+  "step": "initialize",
+  "expected": "Valid capability and input contract",
+  "observed": null,
+  "interventionId": "c64f6443-84fa-4db9-8007-6eae2623b261"
+}

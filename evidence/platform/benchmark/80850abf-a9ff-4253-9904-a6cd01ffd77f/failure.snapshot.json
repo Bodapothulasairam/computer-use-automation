@@ -1,0 +1,25 @@
+{
+  "format": "redacted-semantic-dom-v1",
+  "observation": {
+    "route": "/legacy/member",
+    "status": "notice",
+    "controls": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "link",
+        "name": "Continue"
+      }
+    ],
+    "fields": [],
+    "headings": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "heading",
+        "name": "Service notice"
+      }
+    ],
+    "filled": []
+  }
+}

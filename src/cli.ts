@@ -5,6 +5,7 @@ import { discover, replay } from "./engine.js";
 import { loadModelConfig, OpenAIModel } from "./model.js";
 import { fixture } from "./fixture.js";
 import { presentationOptions } from "./presentation.js";
+import { Variant } from "./bindings.js";
 const { values, positionals } = parseArgs({
   allowPositionals: true,
   options: {
@@ -19,13 +20,15 @@ const { values, positionals } = parseArgs({
     "action-delay-ms": { type: "string" },
     "final-hold-ms": { type: "string" },
     port: { type: "string", default: "4173" },
+    variant: { type: "string", default: "classic" },
   },
 });
 const command = positionals[0] ?? "demo";
 let app: Awaited<ReturnType<typeof startDemo>> | undefined;
 try {
+  const variant = Variant.parse(values.variant);
   if (command === "app") {
-    app = await startDemo(Number(values.port));
+    app = await startDemo(Number(values.port), variant);
     console.log("Synthetic sandbox: " + app.origin + "/app");
     await new Promise<void>((resolve) => {
       process.once("SIGINT", resolve);
@@ -49,6 +52,7 @@ try {
       scenario: command === "handoff" ? "session" : values.scenario,
       headless: !values.headed,
       presentation,
+      variant,
       operator: values.operator || command === "handoff" ? {} : undefined,
     };
     if (command === "discover" || command === "demo") {

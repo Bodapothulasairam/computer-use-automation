@@ -1,0 +1,29 @@
+{
+  "format": "redacted-semantic-dom-v1",
+  "observation": {
+    "route": "/legacy/summary",
+    "status": "ready",
+    "controls": [],
+    "fields": [
+      {
+        "frame": "workspace",
+        "strategy": "table-label",
+        "name": "Member number"
+      },
+      {
+        "frame": "workspace",
+        "strategy": "table-label",
+        "name": "Currency"
+      }
+    ],
+    "headings": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "heading",
+        "name": "Balance summary"
+      }
+    ],
+    "filled": []
+  }
+}

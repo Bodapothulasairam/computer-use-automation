@@ -1,0 +1,12 @@
+{"at":"2026-09-17T04:41:13.092Z","runId":"2dc15a34-a89d-49ff-b6f3-b14d72013759","event":"start","mode":"replay"}
+{"at":"2026-09-17T04:41:13.098Z","runId":"2dc15a34-a89d-49ff-b6f3-b14d72013759","event":"artifact","id":"member-savings-balance","version":"1.0.0","digest":"83f29c3aff6a0a781485144554168068985938df9c2e66109250f81e00dfcc60"}
+{"at":"2026-09-17T04:41:13.615Z","runId":"2dc15a34-a89d-49ff-b6f3-b14d72013759","event":"preflight","variant":"classic","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:41:13.625Z","runId":"2dc15a34-a89d-49ff-b6f3-b14d72013759","event":"action","step":"step-1","actor":"automation","kind":"fill","target":{"frame":"workspace","strategy":"table-label","name":"Member number"},"parameter":"memberId","reason":"deterministic_replay"}
+{"at":"2026-09-17T04:41:13.650Z","runId":"2dc15a34-a89d-49ff-b6f3-b14d72013759","event":"preflight","variant":"classic","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:41:13.679Z","runId":"2dc15a34-a89d-49ff-b6f3-b14d72013759","event":"checkpoint","step":"step-1","expected":"Member search","passed":true}
+{"at":"2026-09-17T04:41:13.686Z","runId":"2dc15a34-a89d-49ff-b6f3-b14d72013759","event":"action","step":"step-2","actor":"automation","kind":"click","target":{"frame":"workspace","strategy":"role","role":"button","name":"Search"},"reason":"deterministic_replay"}
+{"at":"2026-09-17T04:41:13.718Z","runId":"2dc15a34-a89d-49ff-b6f3-b14d72013759","event":"preflight","variant":"classic","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:41:13.913Z","runId":"2dc15a34-a89d-49ff-b6f3-b14d72013759","event":"checkpoint","step":"step-2","expected":"Member details","passed":true}
+{"at":"2026-09-17T04:41:13.927Z","runId":"2dc15a34-a89d-49ff-b6f3-b14d72013759","event":"action","step":"step-3","actor":"automation","kind":"click","target":{"frame":"workspace","strategy":"role","role":"link","name":"Balance summary"},"reason":"deterministic_replay"}
+{"at":"2026-09-17T04:41:13.954Z","runId":"2dc15a34-a89d-49ff-b6f3-b14d72013759","event":"intervention_queued","capabilityId":"member-savings-balance","id":"e7ef74ed-5e22-46ca-b503-18d8f495c73d","reason":"AMBIGUOUS_TARGET","step":"step-3","sessionId":"2dc15a34-a89d-49ff-b6f3-b14d72013759","liveSessionAvailable":false}
+{"at":"2026-09-17T04:41:13.973Z","runId":"2dc15a34-a89d-49ff-b6f3-b14d72013759","event":"finish","status":"failure","code":"AMBIGUOUS_TARGET"}

@@ -20,6 +20,9 @@ const files = [
   "tsconfig.json",
   ".gitignore",
   "LICENSE",
+  "ARCHITECTURE.md",
+  "SECURITY_REVIEW.md",
+  "MANUAL_TESTS.md",
 ];
 async function walk(dir: string) {
   for (const e of await readdir(dir, { withFileTypes: true }).catch(() => [])) {
@@ -40,7 +43,7 @@ const secrets = [
 ].filter((s): s is string => !!s && s.length > 10);
 let checked = 0;
 for (const file of files) {
-  if (file.endsWith(".png")) continue;
+  if (/\.(png|webm)$/.test(file)) continue;
   const text = await readFile(file, "utf8").catch(() => "");
   for (const secret of secrets)
     assert.ok(!text.includes(secret), "A secret is present in " + file);

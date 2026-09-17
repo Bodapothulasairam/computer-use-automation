@@ -1,0 +1,42 @@
+{
+  "status": "failure",
+  "runId": "f6103acf-6c0a-457b-9ef2-10864fe32968",
+  "code": "AMBIGUOUS_TARGET",
+  "step": "step-3",
+  "expected": "Balance summary",
+  "observed": {
+    "route": "/legacy/member",
+    "status": "ready",
+    "controls": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "button",
+        "name": "Transfer funds"
+      },
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "link",
+        "name": "Balance summary"
+      }
+    ],
+    "fields": [
+      {
+        "frame": "workspace",
+        "strategy": "table-label",
+        "name": "Member number"
+      }
+    ],
+    "headings": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "heading",
+        "name": "Member details"
+      }
+    ],
+    "filled": []
+  },
+  "interventionId": "b18cab7c-d9f1-4424-8ea3-731dc39489b1"
+}

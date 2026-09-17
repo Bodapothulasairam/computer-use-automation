@@ -1,0 +1,30 @@
+{
+  "status": "failure",
+  "runId": "c90e6902-2558-4dec-94db-fca774dd10b5",
+  "code": "UNEXPECTED_DIALOG",
+  "step": "step-2",
+  "expected": "Member details",
+  "observed": {
+    "route": "/legacy/member",
+    "status": "unknown_dialog",
+    "controls": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "link",
+        "name": "Restore session"
+      }
+    ],
+    "fields": [],
+    "headings": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "heading",
+        "name": "Unexpected confirmation"
+      }
+    ],
+    "filled": []
+  },
+  "interventionId": "ba856cff-b817-43e9-9c88-091fd333e5e9"
+}

@@ -1,0 +1,69 @@
+
+> legacy-capability-runner@1.0.0 verify
+> npm run typecheck && npm test
+
+
+> legacy-capability-runner@1.0.0 typecheck
+> tsc --noEmit
+
+
+> legacy-capability-runner@1.0.0 test
+> tsx --test --test-concurrency=1 test/*.test.ts
+
+✔ member search requires exactly five digits before click or Enter can submit (770.866ms)
+✔ direct requests still validate member numbers on the server (29.5935ms)
+✔ replay rejects construction of a live model client before any network call (1.0205ms)
+✔ output contract cannot be weakened or repurposed by an artifact (7.184ms)
+✔ reviewed binding returns exact outputs and ignores page instructions: classic (742.5603ms)
+✔ unreviewed UI change stops execution: classic drift (489.0424ms)
+✔ unreviewed UI change stops execution: classic drift_late (659.528ms)
+✔ reviewed binding returns exact outputs and ignores page instructions: cards (855.1105ms)
+✔ unreviewed UI change stops execution: cards drift (491.6164ms)
+✔ unreviewed UI change stops execution: cards drift_late (1014.2596ms)
+✔ registry is exclusive, immutable, restartable and detects artifact tampering (55.5336ms)
+✔ control API enforces authentication, role, host, origin, schemas, sizes and route boundaries (200.9074ms)
+✔ control API has a bounded request rate (35.2205ms)
+✔ failed registry persistence restores the last committed in-memory state (24.2713ms)
+✔ malformed and disconnected requests release the mutation lease (161.3578ms)
+✔ benchmark repeats its seeded schedule without hiding failures and rejects incorrect success (5595.6209ms)
+✔ complete release lifecycle, both layouts, API replay, rollback and actual console states (92365.6585ms)
+✔ headed presentation has readable defaults and bounded overrides (1.1407ms)
+✔ presentation delays an action and holds the final browser view (802.5524ms)
+✔ member workspace stays readable at desktop and mobile widths (859.5144ms)
+✔ artifact rejects unknown versions, dangling inputs, extra data, duplicate ids (7.0093ms)
+✔ policy restricts scheme, origin, exact routes, query keys, target and irreversible action (5.0059ms)
+✔ replay returns typed live outputs for a different parameter, without any model (716.5708ms)
+✔ not found is a business outcome, not a failure or escalation (582.453ms)
+✔ application validation is a business outcome (670.1938ms)
+✔ invalid parameters fail before interacting with a browser (7.0462ms)
+✔ bounded recovery: notice (985.1623ms)
+✔ bounded recovery: transient (1100.3543ms)
+✔ bounded recovery: slow (2078.6074ms)
+✔ hard failure has context and redacted snapshot: permission (1005.1978ms)
+✔ hard failure has context and redacted snapshot: session (753.6626ms)
+✔ hard failure has context and redacted snapshot: app_error (740.6179ms)
+✔ hard failure has context and redacted snapshot: unknown_dialog (762.6319ms)
+✔ hard failure has context and redacted snapshot: ambiguous (804.1404ms)
+✔ forged checkpoint cannot declare success early (14.6379ms)
+✔ missing final transition fails its checkpoint (1102.4354ms)
+✔ zero recovery allowance stops on the interstitial (747.9497ms)
+✔ live takeover keeps session identity, denies unowned actions, records manual action and resumes (1303.0947ms)
+✔ operator timeout fails closed (890.2046ms)
+✔ browser enforces ownership and blocks direct external network requests (643.699ms)
+✔ discovery records only successful observed actions; fixture provenance is explicit (990.6788ms)
+✔ discovery does not trust a premature finish and does not emit an artifact (790.3664ms)
+✔ goal redacts declared input and common numeric/email data (0.5334ms)
+✔ all saved test evidence excludes synthetic PII and credential canaries (1547.7085ms)
+✔ discovery resumes after manual UI actions and the resulting artifact replays (2045.5656ms)
+✔ discovery stops at its step budget (642.6428ms)
+✔ run deadline fails closed (593.5131ms)
+✔ output validation: wrong_member (1084.4397ms)
+✔ output validation: bad_output (1215.0635ms)
+ℹ tests 49
+ℹ suites 0
+ℹ pass 49
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 131467.7017

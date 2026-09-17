@@ -1,0 +1,9 @@
+{
+  "status": "failure",
+  "runId": "674b36d5-220a-40e1-aa1c-e37ffda1e6e4",
+  "code": "UI_DRIFT",
+  "step": "initialize",
+  "expected": "Valid capability and input contract",
+  "observed": null,
+  "interventionId": "63b45522-cbab-415a-9cf8-7d62e58d6045"
+}

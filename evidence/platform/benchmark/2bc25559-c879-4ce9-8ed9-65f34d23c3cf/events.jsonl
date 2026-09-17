@@ -1,0 +1,4 @@
+{"at":"2026-09-17T04:42:39.401Z","runId":"2bc25559-c879-4ce9-8ed9-65f34d23c3cf","event":"start","mode":"replay"}
+{"at":"2026-09-17T04:42:39.405Z","runId":"2bc25559-c879-4ce9-8ed9-65f34d23c3cf","event":"artifact","id":"member-savings-balance","version":"1.0.0","digest":"83f29c3aff6a0a781485144554168068985938df9c2e66109250f81e00dfcc60"}
+{"at":"2026-09-17T04:42:39.406Z","runId":"2bc25559-c879-4ce9-8ed9-65f34d23c3cf","event":"intervention_queued","capabilityId":"member-savings-balance","id":"c64f6443-84fa-4db9-8007-6eae2623b261","reason":"INVALID_INPUT","step":"initialize","sessionId":"2bc25559-c879-4ce9-8ed9-65f34d23c3cf","liveSessionAvailable":false}
+{"at":"2026-09-17T04:42:39.409Z","runId":"2bc25559-c879-4ce9-8ed9-65f34d23c3cf","event":"finish","status":"failure","code":"INVALID_INPUT"}

@@ -1,0 +1,10 @@
+{"at":"2026-09-17T04:42:38.483Z","runId":"1bd3b539-5e15-4980-bc6b-6e148cbbb3fa","event":"start","mode":"replay"}
+{"at":"2026-09-17T04:42:38.486Z","runId":"1bd3b539-5e15-4980-bc6b-6e148cbbb3fa","event":"artifact","id":"member-savings-balance","version":"1.0.0","digest":"83f29c3aff6a0a781485144554168068985938df9c2e66109250f81e00dfcc60"}
+{"at":"2026-09-17T04:42:38.991Z","runId":"1bd3b539-5e15-4980-bc6b-6e148cbbb3fa","event":"preflight","variant":"classic","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:42:39.000Z","runId":"1bd3b539-5e15-4980-bc6b-6e148cbbb3fa","event":"action","step":"step-1","actor":"automation","kind":"fill","target":{"frame":"workspace","strategy":"table-label","name":"Member number"},"parameter":"memberId","reason":"deterministic_replay"}
+{"at":"2026-09-17T04:42:39.042Z","runId":"1bd3b539-5e15-4980-bc6b-6e148cbbb3fa","event":"preflight","variant":"classic","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:42:39.080Z","runId":"1bd3b539-5e15-4980-bc6b-6e148cbbb3fa","event":"checkpoint","step":"step-1","expected":"Member search","passed":true}
+{"at":"2026-09-17T04:42:39.086Z","runId":"1bd3b539-5e15-4980-bc6b-6e148cbbb3fa","event":"action","step":"step-2","actor":"automation","kind":"click","target":{"frame":"workspace","strategy":"role","role":"button","name":"Search"},"reason":"deterministic_replay"}
+{"at":"2026-09-17T04:42:39.110Z","runId":"1bd3b539-5e15-4980-bc6b-6e148cbbb3fa","event":"preflight","variant":"classic","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:42:39.279Z","runId":"1bd3b539-5e15-4980-bc6b-6e148cbbb3fa","event":"intervention_queued","capabilityId":"member-savings-balance","id":"939a7386-61f6-4577-854a-1853b0988206","reason":"APPLICATION_ERROR","step":"step-2","sessionId":"1bd3b539-5e15-4980-bc6b-6e148cbbb3fa","liveSessionAvailable":false}
+{"at":"2026-09-17T04:42:39.300Z","runId":"1bd3b539-5e15-4980-bc6b-6e148cbbb3fa","event":"finish","status":"failure","code":"APPLICATION_ERROR"}

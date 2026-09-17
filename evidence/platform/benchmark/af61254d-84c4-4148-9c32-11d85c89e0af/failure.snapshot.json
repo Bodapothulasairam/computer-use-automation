@@ -1,0 +1,18 @@
+{
+  "format": "redacted-semantic-dom-v1",
+  "observation": {
+    "route": "/legacy/member",
+    "status": "app_error",
+    "controls": [],
+    "fields": [],
+    "headings": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "heading",
+        "name": "Application error"
+      }
+    ],
+    "filled": []
+  }
+}

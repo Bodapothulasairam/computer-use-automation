@@ -1,0 +1,23 @@
+{
+  "status": "failure",
+  "runId": "25c71e62-6071-428b-8c3b-7710d5531433",
+  "code": "APPLICATION_ERROR",
+  "step": "step-2",
+  "expected": "Member details",
+  "observed": {
+    "route": "/legacy/member",
+    "status": "app_error",
+    "controls": [],
+    "fields": [],
+    "headings": [
+      {
+        "frame": "workspace",
+        "strategy": "role",
+        "role": "heading",
+        "name": "Application error"
+      }
+    ],
+    "filled": []
+  },
+  "interventionId": "1b3cb96b-ec0c-4f85-8a81-e87dfc36b5d4"
+}

@@ -1,0 +1,20 @@
+{"at":"2026-09-17T04:42:19.665Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"start","mode":"replay"}
+{"at":"2026-09-17T04:42:19.667Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"artifact","id":"member-savings-balance","version":"1.0.0","digest":"83f29c3aff6a0a781485144554168068985938df9c2e66109250f81e00dfcc60"}
+{"at":"2026-09-17T04:42:20.060Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"preflight","variant":"classic","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:42:20.065Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"action","step":"step-1","actor":"automation","kind":"fill","target":{"frame":"workspace","strategy":"table-label","name":"Member number"},"parameter":"memberId","reason":"deterministic_replay"}
+{"at":"2026-09-17T04:42:20.091Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"preflight","variant":"classic","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:42:20.132Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"checkpoint","step":"step-1","expected":"Member search","passed":true}
+{"at":"2026-09-17T04:42:20.139Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"action","step":"step-2","actor":"automation","kind":"click","target":{"frame":"workspace","strategy":"role","role":"button","name":"Search"},"reason":"deterministic_replay"}
+{"at":"2026-09-17T04:42:20.163Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"preflight","variant":"classic","stage":"Member search","passed":true}
+{"at":"2026-09-17T04:42:20.315Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"intervention_requested","capabilityId":"member-savings-balance","id":"24bfb271-1691-4156-8586-93c3c9c32b64","reason":"SESSION_EXPIRED","step":"step-2","sessionId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","observation":{"route":"/legacy/member","status":"session_expired","controls":[{"frame":"workspace","strategy":"role","role":"link","name":"Restore session"}],"fields":[],"headings":[{"frame":"workspace","strategy":"role","role":"heading","name":"Session expired"}],"filled":[]}}
+{"at":"2026-09-17T04:42:20.323Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"control_claimed","id":"24bfb271-1691-4156-8586-93c3c9c32b64","actor":"human","sessionId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff"}
+{"at":"2026-09-17T04:42:20.477Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"action","step":"step-2","actor":"human","kind":"click","target":{"frame":"workspace","strategy":"role","role":"link","name":"Restore session"},"reason":"operator_intervention"}
+{"at":"2026-09-17T04:42:20.502Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"control_released","id":"24bfb271-1691-4156-8586-93c3c9c32b64","actor":"human","sessionId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff"}
+{"at":"2026-09-17T04:42:20.503Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"intervention_closed","id":"24bfb271-1691-4156-8586-93c3c9c32b64","resumed":true}
+{"at":"2026-09-17T04:42:20.517Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"checkpoint","step":"step-2","expected":"Member details","passed":true}
+{"at":"2026-09-17T04:42:20.523Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"action","step":"step-3","actor":"automation","kind":"click","target":{"frame":"workspace","strategy":"role","role":"link","name":"Balance summary"},"reason":"deterministic_replay"}
+{"at":"2026-09-17T04:42:20.546Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"preflight","variant":"classic","stage":"Member details","passed":true}
+{"at":"2026-09-17T04:42:20.659Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"checkpoint","step":"step-3","expected":"Balance summary","passed":true}
+{"at":"2026-09-17T04:42:20.671Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"checkpoint","step":"success","expected":"Balance summary","passed":true}
+{"at":"2026-09-17T04:42:20.703Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"preflight","variant":"classic","stage":"Balance summary","passed":true}
+{"at":"2026-09-17T04:42:20.759Z","runId":"37c1e0d1-bb7d-4181-86f9-c950ed0177ff","event":"finish","status":"success"}

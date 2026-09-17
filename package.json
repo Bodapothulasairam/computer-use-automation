@@ -17,7 +17,10 @@
     "verify": "npm run typecheck && npm test",
     "schema": "tsx scripts/schema.ts",
     "test:handoff": "tsx scripts/handoff-evidence.ts",
-    "audit": "tsx scripts/audit.ts"
+    "audit": "tsx scripts/audit.ts",
+    "console": "tsx src/platform-cli.ts serve",
+    "benchmark": "tsx src/platform-cli.ts benchmark",
+    "evidence:platform": "tsx scripts/platform-evidence.ts"
   },
   "dependencies": {
     "dotenv": "^17.2.3",

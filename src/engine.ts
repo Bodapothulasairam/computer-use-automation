@@ -15,6 +15,8 @@ import { BrowserSurface } from "./surface.js";
 import { Handoff, type HandoffOptions } from "./handoff.js";
 import { safeGoal, type Discoverer } from "./model.js";
 import type { Presentation } from "./presentation.js";
+import { Variant } from "./bindings.js";
+import { digest } from "./integrity.js";
 export type Options = {
   origin: string;
   parameters: Record<string, string>;
@@ -25,6 +27,9 @@ export type Options = {
   operator?: HandoffOptions;
   policy?: PolicyConfig;
   entryPath?: string;
+  variant?: Variant;
+  delayMs?: number;
+  onRun?: (runId: string) => void;
 };
 export async function readPolicy() {
   return PolicyConfig.parse(
@@ -53,6 +58,7 @@ class Runtime {
   }
   async init() {
     await this.evidence.init();
+    this.options.onRun?.(this.evidence.runId);
     this.policy = new Policy(
       this.options.origin,
       this.options.policy ?? (await readPolicy()),
@@ -62,6 +68,8 @@ class Runtime {
       this.policy,
       this.evidence,
       this.options.presentation,
+      Variant.parse(this.options.variant ?? "classic"),
+      this.options.delayMs ?? 0,
     );
   }
   budget() {
@@ -130,7 +138,14 @@ class Runtime {
         );
         continue;
       }
-      if (await this.surface.check(expected)) return;
+      if (await this.surface.check(expected)) {
+        await this.evidence.event("checkpoint", {
+          step: this.step,
+          expected: expected.target.name,
+          passed: true,
+        });
+        return;
+      }
       await new Promise((r) => setTimeout(r, 75));
     }
     throw new Fault(
@@ -201,6 +216,7 @@ class Runtime {
   }
   async success(a: Capability): Promise<RunResult> {
     await this.settle(a.success);
+    await this.surface.preflight();
     const member = await this.surface.extract(
       { frame: "workspace", strategy: "table-label", name: "Member number" },
       "string",
@@ -242,6 +258,11 @@ export async function replay(
     if (!parsed.success) throw new Fault("INVALID_ARTIFACT");
     const a = parsed.data;
     r.policy.capability(a);
+    await r.evidence.event("artifact", {
+      id: a.id,
+      version: a.version,
+      digest: digest(a),
+    });
     await r.open(a.application.entryPath);
     for (const step of a.steps) {
       r.step = step.id;

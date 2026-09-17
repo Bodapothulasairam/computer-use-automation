@@ -88,12 +88,21 @@ export class Handoff {
     const server = http.createServer(async (req, res) => {
       res.setHeader("Cache-Control", "no-store");
       res.setHeader("X-Frame-Options", "DENY");
+      res.setHeader("X-Content-Type-Options", "nosniff");
+      res.setHeader("Referrer-Policy", "no-referrer");
       const reply = (status: number, value: unknown) => {
         res.statusCode = status;
         res.setHeader("Content-Type", "application/json");
         res.end(JSON.stringify(value));
       };
       const path = req.url?.split("?")[0];
+      if (
+        req.headers.host !==
+        "127.0.0.1:" + (server.address() as AddressInfo).port
+      ) {
+        reply(403, { code: "HOST_DENIED" });
+        return;
+      }
       if (path === "/" && req.method === "GET") {
         res.setHeader("Content-Type", "text/html");
         res.end(operatorHtml);
@@ -132,6 +141,14 @@ export class Handoff {
       }
       if (req.method !== "POST") {
         reply(405, { code: "METHOD_DENIED" });
+        return;
+      }
+      if (
+        !/^application\/json(?:\s*;\s*charset=utf-8)?$/i.test(
+          req.headers["content-type"] ?? "",
+        )
+      ) {
+        reply(415, { code: "JSON_REQUIRED" });
         return;
       }
       if (busy) {
@@ -197,6 +214,9 @@ export class Handoff {
         busy = false;
       }
     });
+    server.requestTimeout = 10000;
+    server.headersTimeout = 5000;
+    server.timeout = 10000;
     await new Promise<void>((resolve) =>
       server.listen(0, "127.0.0.1", resolve),
     );

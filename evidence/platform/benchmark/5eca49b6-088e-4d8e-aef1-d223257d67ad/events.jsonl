@@ -1,0 +1,4 @@
+{"at":"2026-09-17T04:41:27.078Z","runId":"5eca49b6-088e-4d8e-aef1-d223257d67ad","event":"start","mode":"replay"}
+{"at":"2026-09-17T04:41:27.080Z","runId":"5eca49b6-088e-4d8e-aef1-d223257d67ad","event":"artifact","id":"member-savings-balance","version":"1.0.0","digest":"83f29c3aff6a0a781485144554168068985938df9c2e66109250f81e00dfcc60"}
+{"at":"2026-09-17T04:41:27.753Z","runId":"5eca49b6-088e-4d8e-aef1-d223257d67ad","event":"intervention_queued","capabilityId":"member-savings-balance","id":"eedd35eb-27ef-4cef-983e-2dd99ec2ad0e","reason":"UI_DRIFT","step":"initialize","sessionId":"5eca49b6-088e-4d8e-aef1-d223257d67ad","liveSessionAvailable":false}
+{"at":"2026-09-17T04:41:27.796Z","runId":"5eca49b6-088e-4d8e-aef1-d223257d67ad","event":"finish","status":"failure","code":"UI_DRIFT"}

@@ -16,6 +16,7 @@ import type {
 } from "./schema.js";
 import type { Evidence } from "./evidence.js";
 import { pause, type Presentation } from "./presentation.js";
+import { physicalName, type Variant } from "./bindings.js";
 export interface Surface {
   readonly sessionId: string;
   observe(): Promise<Observation>;
@@ -50,6 +51,8 @@ export class BrowserSurface implements Surface {
     readonly policy: Policy,
     readonly evidence: Evidence,
     readonly presentation: Presentation = { actionDelayMs: 0, finalHoldMs: 0 },
+    readonly variant: Variant = "classic",
+    readonly delayMs = 0,
   ) {
     this.sessionId = evidence.runId;
   }
@@ -63,6 +66,8 @@ export class BrowserSurface implements Surface {
     });
     this.context.setDefaultTimeout(this.policy.config.stepTimeoutMs);
     await this.context.addCookies([
+      { name: "variant", value: this.variant, url: this.policy.origin },
+      { name: "delay", value: String(this.delayMs), url: this.policy.origin },
       {
         name: "scenario",
         value: scenario,
@@ -103,6 +108,7 @@ export class BrowserSurface implements Surface {
     });
     await this.page.goto(entry, { waitUntil: "domcontentloaded" });
     await this.frameReady();
+    await this.preflight();
   }
   async frameReady(): Promise<Frame> {
     for (let i = 0; i < 40; i++) {
@@ -120,7 +126,19 @@ export class BrowserSurface implements Surface {
     this.policy.target(t);
     const f = await this.frameReady();
     if (t.strategy === "role")
-      return f.getByRole(t.role!, { name: t.name, exact: true });
+      return f.getByRole(t.role!, {
+        name: physicalName(t.name, this.variant),
+        exact: true,
+      });
+    if (this.variant === "cards")
+      return f
+        .locator(".record-field")
+        .filter({
+          has: f
+            .locator("dt")
+            .getByText(physicalName(t.name, this.variant), { exact: true }),
+        })
+        .locator("dd");
     // Legacy table relationship: the first cell is the field label; exactly one
     // matching row is required. No generated IDs, coordinates, or nth-match fallback.
     return f
@@ -128,8 +146,45 @@ export class BrowserSurface implements Surface {
       .filter({
         has: f.locator("td:first-child").getByText(t.name, { exact: true }),
       })
-      .locator("td")
-      .nth(1);
+      .locator("td:nth-child(2)");
+  }
+  async preflight() {
+    const f = await this.frameReady();
+    if (
+      (await f
+        .locator('meta[name="ledger-layout"]')
+        .getAttribute("content")) !== this.variant
+    )
+      throw new Fault("UI_DRIFT");
+    const obs = await this.observe();
+    const stage = obs.headings.find((t) =>
+      ["Member search", "Member details", "Balance summary"].includes(t.name),
+    )?.name;
+    if (!stage) {
+      if (obs.status === "unknown") throw new Fault("UI_DRIFT");
+      return;
+    }
+    const required =
+      stage === "Member search"
+        ? ["Member number", "Search"]
+        : stage === "Member details"
+          ? ["Member number", "Balance summary"]
+          : ["Member number", "Savings balance", "Currency"];
+    for (const name of required) {
+      const target = targets.find(
+        (t) => t.name === name && t.role !== "heading",
+      )!;
+      const locator = await this.locator(target);
+      const count = await locator.count();
+      if (count > 1) throw new Fault("AMBIGUOUS_TARGET");
+      if (count !== 1 || !(await locator.isVisible()))
+        throw new Fault("UI_DRIFT");
+    }
+    await this.evidence.event("preflight", {
+      variant: this.variant,
+      stage,
+      passed: true,
+    });
   }
   async unique(t: Target): Promise<Locator> {
     const l = await this.locator(t);
@@ -142,7 +197,7 @@ export class BrowserSurface implements Surface {
     // One synchronous DOM evaluation prevents mixing old and new documents during navigation.
     const f = await this.frameReady();
     const obs = (await f.evaluate(
-      ({ catalog, names, dialog }) => {
+      ({ catalog, names, dialog, variant, labels }) => {
         const result: any = {
           route: location.pathname,
           status: dialog ? "unknown_dialog" : "unknown",
@@ -152,10 +207,15 @@ export class BrowserSurface implements Surface {
           filled: [],
         };
         for (const t of catalog) {
+          const label = labels[t.name] ?? t.name;
           let nodes: Element[] = [];
           if (t.strategy === "table-label")
-            nodes = [...document.querySelectorAll("tr")]
-              .filter((row) => row.children[0]?.textContent?.trim() === t.name)
+            nodes = [
+              ...document.querySelectorAll(
+                variant === "cards" ? ".record-field" : "tr",
+              ),
+            ]
+              .filter((row) => row.children[0]?.textContent?.trim() === label)
               .map((row) => row.children[1]!)
               .filter(Boolean);
           else
@@ -167,7 +227,7 @@ export class BrowserSurface implements Surface {
                     ? "button"
                     : "a[href]",
               ),
-            ].filter((el) => el.textContent?.trim() === t.name);
+            ].filter((el) => el.textContent?.trim() === label);
           if (
             !nodes.some(
               (el) =>
@@ -192,7 +252,15 @@ export class BrowserSurface implements Surface {
         }
         return result;
       },
-      { catalog: targets, names: statusNames, dialog: this.dialog },
+      {
+        catalog: targets,
+        names: statusNames,
+        dialog: this.dialog,
+        variant: this.variant,
+        labels: Object.fromEntries(
+          targets.map((t) => [t.name, physicalName(t.name, this.variant)]),
+        ),
+      },
     )) as Observation;
     return obs;
   }
@@ -205,6 +273,7 @@ export class BrowserSurface implements Surface {
     this.policy.action(a, actor);
     this.policy.url(this.page.url());
     if (this.networkViolation) throw new Fault("NETWORK_DENIED");
+    await this.preflight();
     const l = await this.unique(a.target);
     if (actor === "automation" && this.presentation.actionDelayMs > 0) {
       await this.presentStatus(
